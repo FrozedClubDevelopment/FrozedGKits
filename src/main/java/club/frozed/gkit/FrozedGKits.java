@@ -1,5 +1,7 @@
 package club.frozed.gkit;
 
+import club.frozed.gkit.commands.GkitCommand;
+import club.frozed.gkit.commands.ManageCommand;
 import club.frozed.gkit.utils.command.CommandFramework;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,9 @@ public final class FrozedGKits extends JavaPlugin {
     public void onEnable() {
         instance = this;
         commandFramework = new CommandFramework(this);
+
+        new GkitCommand();
+        new ManageCommand();
     }
 
     @Override
