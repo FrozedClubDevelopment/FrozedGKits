@@ -1,0 +1,9 @@
+KITS:
+  DIAMOND:
+    SLOT: 13
+    COLOR: AQUA
+    ENABLED: true
+    COOLDOWN: 16800
+    CONTENTS:
+      ARMOR: [ ]
+      INVENTORY: []
