@@ -1,7 +1,7 @@
 package club.frozed.gkit.utils.command;
 
 import club.frozed.gkit.FrozedGKits;
-import club.frozed.gkit.utils.CC;
+import club.frozed.gkit.utils.chat.Color;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -64,7 +64,7 @@ public class CommandFramework implements CommandExecutor {
                     return true;
                 }
                 if (!command.permission().equals("") && (!sender.hasPermission(command.permission()))) {
-                    sender.sendMessage(CC.translate("&cIt seems you don't have enough perms to perform this command."));
+                    sender.sendMessage(Color.translate("&cIt seems you don't have enough perms to perform this command."));
                     return true;
                 }
                 if (command.inGameOnly() && !(sender instanceof Player)) {
