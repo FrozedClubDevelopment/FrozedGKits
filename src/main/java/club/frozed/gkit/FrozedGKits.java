@@ -35,7 +35,10 @@ public final class FrozedGKits extends JavaPlugin {
         pluginConfig = new FileConfig(this, "config.yml");
         kitsConfig = new FileConfig(this, "kits.yml");
 
-        if (!KitManager.getKits().isEmpty()) {
+
+        KitManager.loadKits();
+
+        /*if (!KitManager.getKits().isEmpty()) {
             try {
                 KitManager.loadKits();
             } catch (Exception exception) {
@@ -44,7 +47,7 @@ public final class FrozedGKits extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage(Color.translate("&cPlease check your kits.yml file!"));
                 Bukkit.getConsoleSender().sendMessage(Color.CHAT_BAR);
             }
-        }
+        }*/
 
         Bukkit.getPluginManager().registerEvents(new ButtonListener(), this);
 
