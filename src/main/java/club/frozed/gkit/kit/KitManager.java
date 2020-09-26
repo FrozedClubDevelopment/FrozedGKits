@@ -5,8 +5,9 @@ import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.config.ConfigCursor;
 import club.frozed.gkit.utils.items.InventoryUtils;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,22 +19,21 @@ import java.util.List;
  * Project: FrozedGKits
  * Date: 09/25/2020 @ 18:06
  */
-@Getter
+@Getter @Setter
 public class KitManager {
 
-    @Getter
-    private static final List<KitManager> kits = new ArrayList<>();
+    @Getter private static List<KitManager> kits = new ArrayList<>();
 
-    private final String name;
-    private final String icon;
-    private final int slotPosition;
-    private final ChatColor color;
-    private final boolean enabled;
+    private String name;
+    private ItemStack icon;
+    private int slotPosition;
+    private String color;
+    private boolean enabled;
 
-    private final ItemStack[] armor;
-    private final ItemStack[] inventory;
+    private ItemStack[] armor;
+    private ItemStack[] inventory;
 
-    public KitManager(String name, String icon, int slotPosition, ChatColor color, boolean enabled, ItemStack[] armor, ItemStack[] itemStacks) {
+    public KitManager(String name, ItemStack icon, int slotPosition, String color, boolean enabled, ItemStack[] armor, ItemStack[] itemStacks) {
         this.name = name;
         this.icon = icon;
         this.slotPosition = slotPosition;
@@ -51,10 +51,11 @@ public class KitManager {
 
         ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
         for (String kit : FrozedGKits.getInstance().getKitsConfig().getConfig().getConfigurationSection("KITS").getKeys(false)) {
-            String icon = FrozedGKits.getInstance().getKitsConfig().getConfig().getString(configCursor + kit + ".ICON");
-            int slotPosition = FrozedGKits.getInstance().getKitsConfig().getConfig().getInt(configCursor + kit + ".SLOT");
-            ChatColor color = ChatColor.valueOf(FrozedGKits.getInstance().getKitsConfig().getConfig().getString(configCursor + kit + ".COLOR"));
-            boolean enabled = FrozedGKits.getInstance().getKitsConfig().getConfig().getBoolean(configCursor + kit + ".ENABLED");
+            ItemStack icon = new ItemStack(Material.valueOf(FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".ICON")));
+            int slotPosition = FrozedGKits.getInstance().getKitsConfig().getConfig().getInt("KITS." + kit + ".SLOT");
+            String color = FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".COLOR");
+            boolean enabled = FrozedGKits.getInstance().getKitsConfig().getConfig().getBoolean("KITS." + kit + ".ENABLED");
+
             ItemStack[] armor = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".ARMOR"));
             ItemStack[] inventory = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".INVENTORY"));
 
@@ -67,10 +68,10 @@ public class KitManager {
     public static void saveKit(String name, Player player) {
         ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
 
-        configCursor.set(name + ".ICON", configCursor.getString(name + ".ICON"));
-        configCursor.set(name + ".SLOT", configCursor.getInt(name + ".SLOT"));
-        configCursor.set(name + ".COLOR", configCursor.getString(name + ".COLOR"));
-        configCursor.set(name + ".ENABLED", configCursor.getBoolean(name + ".ENABLED"));
+        configCursor.set(name + ".ICON", getKitByName(name).getIcon().getType().name());
+        configCursor.set(name + ".SLOT", getKitByName(name).getSlotPosition());
+        configCursor.set(name + ".COLOR", getKitByName(name).getColor());
+        configCursor.set(name + ".ENABLED", getKitByName(name).isEnabled());
         configCursor.set(name + ".ARMOR", InventoryUtils.serializeInventory(player.getInventory().getArmorContents()));
         configCursor.set(name + ".INVENTORY", InventoryUtils.serializeInventory(player.getInventory().getContents()));
         configCursor.save();
@@ -89,10 +90,10 @@ public class KitManager {
             FrozedGKits.getInstance().getKitsConfig().getConfig().set("KITS", null);
         } else {
             kits.forEach(kit -> {
-                configCursor.set(kit.getName() + ".ICON", configCursor.getString(kit.getIcon()));
-                configCursor.set(kit.getName() + ".SLOT", FrozedGKits.getInstance().getKitsConfig().getConfig().getInt(kit.getSlotPosition()));
-                configCursor.set(kit.getName() + ".COLOR", FrozedGKits.getInstance().getKitsConfig().getConfig().getString(kit.getColor()));
-                configCursor.set(kit.getName() + ".ENABLED", FrozedGKits.getInstance().getKitsConfig().getConfig().getBoolean(kit.getColor()));
+                configCursor.set(kit.getName() + ".ICON", kit.getIcon());
+                configCursor.set(kit.getName() + ".SLOT", kit.getSlotPosition());
+                configCursor.set(kit.getName() + ".COLOR", kit.getColor());
+                configCursor.set(kit.getName() + ".ENABLED", kit.isEnabled());
                 configCursor.set(kit.getName() + ".ARMOR", InventoryUtils.serializeInventory(kit.getArmor()));
                 configCursor.set(kit.getName() + ".INVENTORY", InventoryUtils.serializeInventory(kit.getInventory()));
             });
