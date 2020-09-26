@@ -8,8 +8,6 @@ import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
 import club.frozed.gkit.utils.menu.Menu;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -38,8 +36,10 @@ public class KitManagerSelectionMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
+        int slot = 0;
         for (KitManager kitManager : KitManager.getKits()) {
-            buttons.put(kitManager.getSlotPosition(), new KitButton(kitManager));
+            buttons.put(slot, new KitButton(kitManager));
+            slot++;
         }
 
         buttons.put(plugin.getPluginConfig().getConfig().getInt("KIT-MANAGER-MENU.KIT-SELECTION-ACTION-BUTTON-SLOT"), new KitSelectionActionButton());
@@ -55,7 +55,7 @@ public class KitManagerSelectionMenu extends Menu {
                     .setName(Color.translate("&b&lKit Selection Actions"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            "&a ▶ &lLEFT-CLICK &ato create new kit",
+                            "&a ▶ &lLEFT-CLICK-HERE &ato create new a kit",
                             "&e ▶ &lRIGHT-CLICK &eto edit an existing kit",
                             "&c ▶ &lSHIFT-CLICK &cto delete an existing kit",
                             Color.MENU_BAR)
@@ -65,20 +65,16 @@ public class KitManagerSelectionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            switch (clickType) {
-                case LEFT:
-                    if (player.getGameMode() != GameMode.SURVIVAL) {
-                        player.sendMessage(Color.translate("&cTo create a kit you need to be on Survival Mode."));
-                        return;
-                    }
-                    Bukkit.getServer().broadcastMessage("Clicking here will create a new kit and open the kit edition menu right after.");
-                    break;
-                case RIGHT:
-                case MIDDLE:
-                    Bukkit.getServer().broadcastMessage("Click here doesn't do anything");
-                    break;
+            if (clickType.isLeftClick()) {
+                player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
+
+                player.closeInventory();
+                player.sendMessage(Color.CHAT_BAR);
+                player.sendMessage(Color.translate("&8[&b&l!&8] &aType the name of the new kit..."));
+                player.sendMessage(Color.CHAT_BAR);
+
+                KitManager.getKitNameState().add(player.getName());
             }
-            player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
         }
     }
 
@@ -107,13 +103,14 @@ public class KitManagerSelectionMenu extends Menu {
             switch (clickType) {
                 case RIGHT:
                     new KitManagerEditionMenu().openMenu(player);
-                    Bukkit.getServer().broadcastMessage("Click here will open the kit edition menu.");
+                    player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
                     break;
                 case MIDDLE:
-                    Bukkit.getServer().broadcastMessage("Click here will delete the kit that gets clicked.");
+                    KitManager.deleteKit(kitManager.getName());
+                    player.sendMessage(Color.translate("&8[&b&l!&8] &7You have deleted the kit: &a" + kitManager.getName()));
+                    player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0F, 1.0F);
                     break;
             }
-            player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
         }
 
         public KitButton(KitManager kit) {
