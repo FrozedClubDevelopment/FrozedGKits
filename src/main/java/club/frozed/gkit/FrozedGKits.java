@@ -3,6 +3,7 @@ package club.frozed.gkit;
 import club.frozed.gkit.commands.FrozedGkitsCommand;
 import club.frozed.gkit.commands.GkitCommand;
 import club.frozed.gkit.commands.ManageCommand;
+import club.frozed.gkit.kit.KitCreationListener;
 import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.command.CommandFramework;
@@ -50,6 +51,7 @@ public final class FrozedGKits extends JavaPlugin {
         }*/
 
         Bukkit.getPluginManager().registerEvents(new ButtonListener(), this);
+        Bukkit.getPluginManager().registerEvents(new KitCreationListener(), this);
 
         new GkitCommand();
         new ManageCommand();
