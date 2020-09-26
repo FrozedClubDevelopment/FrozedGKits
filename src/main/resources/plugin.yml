@@ -1,7 +1,6 @@
 name: FrozedGKits
 version: ${project.version}
 main: club.frozed.gkit.FrozedGKits
-api-version: 1.16
-authors: [ Elb1to, Gatogamer_, Ryzeon, FrozedClubDevelopment ]
+authors: [Elb1to, Ryzeon, FrozedClubDevelopment]
 description: In-Game kits management plugin
 website: www.frozed.club
