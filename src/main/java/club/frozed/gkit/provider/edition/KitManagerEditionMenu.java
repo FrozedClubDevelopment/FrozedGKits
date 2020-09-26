@@ -80,7 +80,9 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            Bukkit.getServer().broadcastMessage("Clicking here will set the new kit icon.");
+            if (player.getItemOnCursor().getType() == null || player.getItemOnCursor().getType() == Material.AIR) {
+                return;
+            }
             kitManager.setIcon(new ItemStack(player.getItemOnCursor().getType()));
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
@@ -108,7 +110,7 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            Bukkit.getServer().broadcastMessage("Clicking here will increase or decrease the slot position for the kit.");
+            new KitManagerSlotSelectionMenu().openMenu(player);
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
@@ -136,7 +138,6 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            Bukkit.getServer().broadcastMessage("Clicking here will toggle the kit from enabled to disabled and vice-versa.");
             KitManager.getKitByName(kitManager.getName()).setEnabled(!kitManager.isEnabled());
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
@@ -219,7 +220,6 @@ public class KitManagerEditionMenu extends Menu {
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             KitManager.saveKit(kitManager.getName(), player);
-            Bukkit.getServer().broadcastMessage("Kit Saved.");
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
