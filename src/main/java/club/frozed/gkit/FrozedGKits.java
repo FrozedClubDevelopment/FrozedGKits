@@ -3,7 +3,7 @@ package club.frozed.gkit;
 import club.frozed.gkit.commands.FrozedGkitsCommand;
 import club.frozed.gkit.commands.GkitCommand;
 import club.frozed.gkit.commands.ManageCommand;
-import club.frozed.gkit.managers.KitManager;
+import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.command.CommandFramework;
 import club.frozed.gkit.utils.config.FileConfig;
@@ -26,9 +26,8 @@ public final class FrozedGKits extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("Ryzeon") ||
-                !this.getDescription().getAuthors().contains("FrozedClubDevelopment") || !this.getDescription().getWebsite().contains("www.frozed.club") ||
-                !this.getDescription().getName().equals("FrozedGKits")) {
+        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("FrozedClubDevelopment") ||
+                !this.getDescription().getWebsite().contains("www.frozed.club") || !this.getDescription().getName().equals("FrozedGKits")) {
             Bukkit.getPluginManager().disablePlugins();
         }
 
@@ -36,7 +35,17 @@ public final class FrozedGKits extends JavaPlugin {
         pluginConfig = new FileConfig(this, "config.yml");
         kitsConfig = new FileConfig(this, "kits.yml");
 
-        KitManager.loadKits();
+        if (!KitManager.getKits().isEmpty()) {
+            try {
+                KitManager.loadKits();
+            } catch (Exception exception) {
+                Bukkit.getConsoleSender().sendMessage(Color.CHAT_BAR);
+                Bukkit.getConsoleSender().sendMessage(Color.translate("&cAn error occurred while trying to load your kits."));
+                Bukkit.getConsoleSender().sendMessage(Color.translate("&cPlease check your kits.yml file!"));
+                Bukkit.getConsoleSender().sendMessage(Color.CHAT_BAR);
+            }
+        }
+
         Bukkit.getPluginManager().registerEvents(new ButtonListener(), this);
 
         new GkitCommand();
