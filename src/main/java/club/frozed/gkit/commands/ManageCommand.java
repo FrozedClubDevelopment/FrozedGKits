@@ -2,16 +2,17 @@ package club.frozed.gkit.commands;
 
 import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.KitManager;
-import club.frozed.gkit.provider.KitManagerSelectionMenu;
+import club.frozed.gkit.provider.selection.KitManagerSelectionMenu;
 import club.frozed.gkit.utils.chat.Clickable;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.command.BaseCommand;
 import club.frozed.gkit.utils.command.Command;
 import club.frozed.gkit.utils.command.CommandArgs;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +61,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                //new KitManager(kitName, player.getInventory().getContents(), player.getInventory().getArmorContents(), color, icon, enabled, slotPosition);
-                new KitManager(kitName, "ENCHANTED_BOOK", 0, ChatColor.AQUA, true,
-                        player.getInventory().getContents(), player.getInventory().getArmorContents());
-
+                new KitManager(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
                 player.sendMessage(Color.translate("&aSuccessfully created &f" + kitName + " &akit"));
                 break;
             case "delete":
