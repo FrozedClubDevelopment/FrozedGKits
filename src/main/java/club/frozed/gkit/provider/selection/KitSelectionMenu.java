@@ -1,4 +1,4 @@
-package club.frozed.gkit.provider;
+package club.frozed.gkit.provider.selection;
 
 /**
  * Created by Elb1to
