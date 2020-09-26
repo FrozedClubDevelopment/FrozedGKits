@@ -14,10 +14,12 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Getter @Setter
+@Getter
+@Setter
 public final class FrozedGKits extends JavaPlugin {
 
-    @Getter private static FrozedGKits instance;
+    @Getter
+    private static FrozedGKits instance;
     private CommandFramework commandFramework;
 
     private FileConfig pluginConfig, kitsConfig;
@@ -38,6 +40,15 @@ public final class FrozedGKits extends JavaPlugin {
 
 
         KitManager.loadKits();
+
+        /*
+         * TODO-LIST:
+         *      - Menu de selección de kit (para users)
+         *      - Menu de seleccion de color para el kit (para admin)
+         *      - Menu de seleccion de slot para el kit (para admin)
+         *      - Hacer cooldown de kit
+         *      - Verificar que todos los menus funcionen 100%  
+         */
 
         /*if (!KitManager.getKits().isEmpty()) {
             try {
