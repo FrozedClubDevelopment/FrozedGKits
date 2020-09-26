@@ -23,6 +23,7 @@ import java.util.List;
 public class KitManager {
 
     @Getter private static List<KitManager> kits = new ArrayList<>();
+    @Getter private static List<String> kitNameState = new ArrayList<>();
 
     private String name;
     private ItemStack icon;
