@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Clickable {
 
-    private final List<TextComponent> components = new ArrayList<>();
+    private List<TextComponent> components = new ArrayList<>();
 
     public Clickable(String msg) {
         TextComponent message = new TextComponent(Color.translate(msg));

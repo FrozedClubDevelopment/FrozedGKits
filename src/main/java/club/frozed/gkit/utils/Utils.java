@@ -40,7 +40,7 @@ public class Utils {
     public static boolean isInventoryEmpty(Inventory inv) {
         ItemStack[] contents;
         for (int length = (contents = inv.getContents()).length, i = 0; i < length; ++i) {
-            final ItemStack item = contents[i];
+            ItemStack item = contents[i];
             if (item != null && item.getType() != Material.AIR) {
                 return false;
             }
