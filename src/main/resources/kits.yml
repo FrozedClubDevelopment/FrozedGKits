@@ -1,5 +1,6 @@
 KITS:
   DIAMOND:
+    ICON: DIAMOND_SWORD
     SLOT: 13
     COLOR: AQUA
     ENABLED: true
