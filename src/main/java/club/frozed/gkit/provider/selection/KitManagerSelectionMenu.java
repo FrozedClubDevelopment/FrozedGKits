@@ -1,7 +1,8 @@
-package club.frozed.gkit.provider;
+package club.frozed.gkit.provider.selection;
 
 import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.KitManager;
+import club.frozed.gkit.provider.edition.KitManagerEditionMenu;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
@@ -55,8 +56,8 @@ public class KitManagerSelectionMenu extends Menu {
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
                             "&a ▶ &lLEFT-CLICK &ato create new kit",
-                            "&e ▶ &lRIGHT-CLICK &ato edit an existing kit",
-                            "&c ▶ &lSHIFT-CLICK &ato delete an existing kit",
+                            "&e ▶ &lRIGHT-CLICK &eto edit an existing kit",
+                            "&c ▶ &lSHIFT-CLICK &cto delete an existing kit",
                             Color.MENU_BAR)
                     )
                     .get();
@@ -87,7 +88,7 @@ public class KitManagerSelectionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(Material.valueOf(kitManager.getIcon()))
+            return new ItemCreator(kitManager.getIcon())
                     .setName(Color.translate(kitManager.getColor() + StringUtils.capitalize(kitManager.getName())))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
