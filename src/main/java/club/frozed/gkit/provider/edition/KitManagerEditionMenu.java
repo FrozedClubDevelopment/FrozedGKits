@@ -1,21 +1,22 @@
 package club.frozed.gkit.provider.edition;
 
-import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
+import club.frozed.gkit.utils.Utils;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
 import club.frozed.gkit.utils.menu.Menu;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Elb1to
@@ -30,10 +31,10 @@ public class KitManagerEditionMenu extends Menu {
 
     @Override
     public String getTitle(Player player) {
-        return Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-MANAGER-MENU.INVENTORY-TITLE"));
+        return Color.translate("&b&lEditing Kit &f▶ " + kitManager.getColor() + kitManager.getName());
     }
 
-    public KitManagerEditionMenu(Kit kit){
+    public KitManagerEditionMenu(Kit kit) {
         this.kitManager = kit;
     }
 
@@ -41,33 +42,14 @@ public class KitManagerEditionMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
 
         Map<Integer, Button> buttons = new HashMap<>();
-            buttons.put(0, new ActiveKitButton(kitManager));
-            buttons.put(1, new KitIconButton(kitManager));
-            buttons.put(2, new KitSlotPositionButton(kitManager));
-            buttons.put(5, new KitToggleButton(kitManager));
-            buttons.put(6, new KitCooldownButton(kitManager));
-            buttons.put(7, new KitColorButton(kitManager));
-            buttons.put(8, new SaveKitButton(kitManager));
-
+        buttons.put(0, new KitIconButton(kitManager));
+        buttons.put(1, new KitSlotPositionButton(kitManager));
+        buttons.put(5, new KitToggleButton(kitManager));
+        buttons.put(6, new KitCooldownButton(kitManager));
+        buttons.put(7, new KitColorButton(kitManager));
+        buttons.put(8, new SaveKitButton(kitManager));
 
         return buttons;
-    }
-
-    public static class ActiveKitButton extends Button {
-
-        Kit kitManager;
-
-        @Override
-        public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(Material.NETHER_STAR)
-                    .setName(Color.translate("&b&lActive Kit &f▶ &r" + kitManager.getColor() + kitManager.getName()))
-                    .setLore(Arrays.asList(Color.MENU_BAR, "&7You're editing the kit: &f" + kitManager.getName(), Color.MENU_BAR))
-                    .get();
-        }
-
-        public ActiveKitButton(Kit kit) {
-            this.kitManager = kit;
-        }
     }
 
     public static class KitIconButton extends Button {
@@ -81,6 +63,8 @@ public class KitManagerEditionMenu extends Menu {
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
                             "&7Drag and drop new kit icon here.",
+                            " ",
+                            "&7Current Icon&f: &b" + kitManager.getIcon().getType().name(),
                             Color.MENU_BAR)
                     ).get();
         }
@@ -109,8 +93,9 @@ public class KitManagerEditionMenu extends Menu {
                     .setName(Color.translate("&b&lKit Slot"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            "&7Click here to increase or decrease",
-                            "&7the slot position of the kit.",
+                            "&7Click here to choose the slot position.",
+                            " ",
+                            "&7Current Slot&f: &b" + kitManager.getSlotPosition(),
                             Color.MENU_BAR)
                     ).get();
         }
@@ -164,16 +149,17 @@ public class KitManagerEditionMenu extends Menu {
                     .setName(Color.translate("&b&lKit Cooldown"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            "&7Click here to input ",
-                            "&7the kit cooldown period.",
-                            Color.MENU_BAR)
-                    ).get();
+                            "&7Click here to input the kit cooldown period.",
+                            " ",
+                            "&7Current Cooldown&f: &b" + Utils.formatTimeMillis(kitManager.getCooldown()),
+                            Color.MENU_BAR))
+                    .get();
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             player.closeInventory();
-            cooldownProcessPlayer.put(player.getName(),kitManager);
+            cooldownProcessPlayer.put(player.getName(), kitManager);
             player.sendMessage(Color.translate("&aEnter kit cooldown duration."));
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
@@ -189,14 +175,15 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(Material.WOOL).setDurability(1)
+            return new ItemCreator(Material.WOOL).setDurability(5)
                     .setName(Color.translate("&b&lKit Color"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            "&7Click here to",
-                            "&7select the kit color.",
-                            Color.MENU_BAR)
-                    ).get();
+                            "&7Click here to select the kit color.",
+                            " ",
+                            "&7Current Display Color&f: " + kitManager.getColor() + "[This]",
+                            Color.MENU_BAR))
+                    .get();
         }
 
         @Override
@@ -219,10 +206,9 @@ public class KitManagerEditionMenu extends Menu {
                     .setName(Color.translate("&b&lSave Kit"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            "&7Click here to",
-                            "&7save the new kit inventory.",
-                            Color.MENU_BAR)
-                    ).get();
+                            "&7Click here to save the new kit inventory.",
+                            Color.MENU_BAR))
+                    .get();
         }
 
         @Override
