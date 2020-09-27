@@ -1,11 +1,13 @@
 package club.frozed.gkit.provider.edition;
 
 import club.frozed.gkit.FrozedGKits;
+import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
 import club.frozed.gkit.utils.menu.Menu;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -13,9 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Elb1to
@@ -24,16 +24,23 @@ import java.util.Map;
  */
 public class KitManagerEditionMenu extends Menu {
 
+    private final Kit kitManager;
+
+    @Getter public static Map<String, Kit> cooldownProcessPlayer = new HashMap<>();
+
     @Override
     public String getTitle(Player player) {
         return Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-MANAGER-MENU.INVENTORY-TITLE"));
     }
 
+    public KitManagerEditionMenu(Kit kit){
+        this.kitManager = kit;
+    }
+
     @Override
     public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
 
-        for (KitManager kitManager : KitManager.getKits()) {
+        Map<Integer, Button> buttons = new HashMap<>();
             buttons.put(0, new ActiveKitButton(kitManager));
             buttons.put(1, new KitIconButton(kitManager));
             buttons.put(2, new KitSlotPositionButton(kitManager));
@@ -41,14 +48,14 @@ public class KitManagerEditionMenu extends Menu {
             buttons.put(6, new KitCooldownButton(kitManager));
             buttons.put(7, new KitColorButton(kitManager));
             buttons.put(8, new SaveKitButton(kitManager));
-        }
+
 
         return buttons;
     }
 
     public static class ActiveKitButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -58,14 +65,14 @@ public class KitManagerEditionMenu extends Menu {
                     .get();
         }
 
-        public ActiveKitButton(KitManager kit) {
+        public ActiveKitButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class KitIconButton extends Button {
 
-        KitManager kitManager;
+        private final Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -87,14 +94,14 @@ public class KitManagerEditionMenu extends Menu {
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
-        public KitIconButton(KitManager kit) {
+        public KitIconButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class KitSlotPositionButton extends Button {
 
-        KitManager kitManager;
+        private final Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -110,18 +117,18 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            new KitManagerSlotSelectionMenu().openMenu(player);
+            new KitManagerSlotSelectionMenu(kitManager).openMenu(player);
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
-        public KitSlotPositionButton(KitManager kit) {
+        public KitSlotPositionButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class KitToggleButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -138,18 +145,18 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            KitManager.getKitByName(kitManager.getName()).setEnabled(!kitManager.isEnabled());
+            Kit.getKitByName(kitManager.getName()).setEnabled(!kitManager.isEnabled());
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
-        public KitToggleButton(KitManager kit) {
+        public KitToggleButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class KitCooldownButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -165,18 +172,20 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            Bukkit.getServer().broadcastMessage("Clicking here will make the player type the kit cooldown in chat.");
+            player.closeInventory();
+            cooldownProcessPlayer.put(player.getName(),kitManager);
+            player.sendMessage(Color.translate("&aEnter kit cooldown duration."));
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
-        public KitCooldownButton(KitManager kit) {
+        public KitCooldownButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class KitColorButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -192,18 +201,17 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            Bukkit.getServer().broadcastMessage("Clicking here will open the kit color selection menu.");
-            player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
+            new KitManagerColorSelectionMenu(kitManager).openMenu(player);
         }
 
-        public KitColorButton(KitManager kit) {
+        public KitColorButton(Kit kit) {
             this.kitManager = kit;
         }
     }
 
     public static class SaveKitButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -221,9 +229,10 @@ public class KitManagerEditionMenu extends Menu {
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             KitManager.saveKit(kitManager.getName(), player);
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
+            player.closeInventory();
         }
 
-        public SaveKitButton(KitManager kit) {
+        public SaveKitButton(Kit kit) {
             this.kitManager = kit;
         }
     }
