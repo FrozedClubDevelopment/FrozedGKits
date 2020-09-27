@@ -1,8 +1,22 @@
 KIT-MANAGER-MENU:
-  INVENTORY-SIZE: 1
+  INVENTORY-SIZE: 5
   INVENTORY-TITLE: "&b&lGKit Manager"
   KIT-SELECTION-ACTION-BUTTON-SLOT: 31
 
 KIT-SELECTION-MENU:
   INVENTORY-SIZE: 1
   INVENTORY-TITLE: "&b&lChoose a GKit"
+  COOLDOWN-MSG: '&cYou must wait <time-left> to use this kit again.'
+  ITEM-LORE:
+    NO-PERMS:
+      - '&7&m----------------'
+      - '&cYou can buy this kit in store.example.com'
+      - '&7&m----------------'
+    TIME-LEFT:
+      - '&7&m----------------'
+      - '&cYou must wait <time-left> to use this kit again.'
+      - '&7&m----------------'
+    AVAILABLE:
+      - '&7&m----------------'
+      - '&b&lRIGHT-CLICK &fto equip &b<kit> &fkit.'
+      - '&7&m----------------'
