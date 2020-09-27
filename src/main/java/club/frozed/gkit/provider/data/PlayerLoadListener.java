@@ -1,4 +1,4 @@
-package club.frozed.gkit.provider.player;
+package club.frozed.gkit.provider.data;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -6,7 +6,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
@@ -20,7 +19,6 @@ public class PlayerLoadListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
         PlayerData playerData = PlayerData.getByName(e.getName());
-
         if (playerData == null) {
             playerData = new PlayerData(e.getName());
         }
@@ -30,7 +28,6 @@ public class PlayerLoadListener implements Listener {
         PlayerData playerData = PlayerData.getByName(player.getName());
         playerData.deletePlayer();
     }
-
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {

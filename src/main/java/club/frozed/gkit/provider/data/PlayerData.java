@@ -1,4 +1,4 @@
-package club.frozed.gkit.provider.player;
+package club.frozed.gkit.provider.data;
 
 import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.Kit;
@@ -6,9 +6,11 @@ import club.frozed.gkit.utils.DateUtils;
 import club.frozed.gkit.utils.config.FileConfig;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Ryzeon
@@ -16,20 +18,20 @@ import java.util.*;
  * Date: 26/09/2020 @ 23:04
  */
 
-@Getter @Setter
+@Getter
+@Setter
 public class PlayerData {
 
     @Getter public static List<PlayerData> playersData = new ArrayList<>();
 
     private String name;
 
-    public PlayerData(String string){
+    public PlayerData(String string) {
         this.name = string;
         playersData.add(this);
     }
 
-
-    public static PlayerData getByName(String name){
+    public static PlayerData getByName(String name) {
         return PlayerData.getPlayersData().stream().filter(playerData -> playerData.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
@@ -45,19 +47,18 @@ public class PlayerData {
         return DateUtils.formatDateDiff(from, to);
     }
 
-    public void deletePlayer(){
+    public void deletePlayer() {
         playersData.remove(this);
     }
 
-    public void saveCooldown(Long addedDate, Kit kit){
-
+    public void saveCooldown(Long addedDate, Kit kit) {
         FileConfig playerConfig = FrozedGKits.getInstance().getDataConfig();
 
-        playerConfig.getConfig().set(this.name + ".COOLDOWNS." +kit.getName()+".ADDED-DATE", addedDate);
+        playerConfig.getConfig().set(this.name + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE", addedDate);
         playerConfig.save();
     }
 
-    public Long getAddedCooldownDate(Kit kit){
-        return FrozedGKits.getInstance().getDataConfig().getConfig().getLong(this.name+".COOLDOWNS."+kit.getName() +".ADDED-DATE");
+    public Long getAddedCooldownDate(Kit kit) {
+        return FrozedGKits.getInstance().getDataConfig().getConfig().getLong(this.name + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE");
     }
 }
