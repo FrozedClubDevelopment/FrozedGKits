@@ -16,7 +16,6 @@ public class GkitCommand extends BaseCommand {
 
     public void onCommand(CommandArgs commandArgs) {
         Player player = commandArgs.getPlayer();
-
         new KitSelectionMenu().openMenu(player);
     }
 }
