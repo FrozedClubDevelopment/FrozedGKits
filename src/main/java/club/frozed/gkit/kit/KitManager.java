@@ -19,7 +19,8 @@ import java.util.List;
  * Project: FrozedGKits
  * Date: 09/25/2020 @ 18:06
  */
-@Getter @Setter
+@Getter
+@Setter
 public class KitManager {
 
     @Getter private static List<Kit> kits = new ArrayList<>();
@@ -39,8 +40,8 @@ public class KitManager {
             ItemStack[] armor = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".ARMOR"));
             ItemStack[] inventory = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".INVENTORY"));
 
-           Kit newKit =  new Kit(kit, icon, slotPosition, color, enabled, armor, inventory);
-           newKit.setCooldown(cooldown);
+            Kit newKit = new Kit(kit, icon, slotPosition, color, enabled, armor, inventory);
+            newKit.setCooldown(cooldown);
         }
 
         Bukkit.getConsoleSender().sendMessage(Color.translate("&aSuccessfully loaded &b" + KitManager.getKits().size() + " &akits."));
