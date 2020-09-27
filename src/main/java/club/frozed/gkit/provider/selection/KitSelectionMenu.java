@@ -1,23 +1,21 @@
 package club.frozed.gkit.provider.selection;
 
 import club.frozed.gkit.FrozedGKits;
-import club.frozed.gkit.commands.GkitCommand;
 import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
-import club.frozed.gkit.provider.edition.KitManagerEditionMenu;
-import club.frozed.gkit.provider.player.PlayerData;
+import club.frozed.gkit.provider.data.PlayerData;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
 import club.frozed.gkit.utils.menu.Menu;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Elb1to
@@ -26,7 +24,7 @@ import java.util.*;
  */
 public class KitSelectionMenu extends Menu {
 
-    private final  FrozedGKits plugin = FrozedGKits.getInstance();
+    private final FrozedGKits plugin = FrozedGKits.getInstance();
 
     @Override
     public String getTitle(Player player) {
@@ -39,14 +37,15 @@ public class KitSelectionMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (Kit kit : KitManager.getKits()) {
-            if (kit != null && kit.isEnabled())
-            buttons.put(kit.getSlotPosition(), new GKitButton(kit));
+            if (kit != null && kit.isEnabled()) {
+                buttons.put(kit.getSlotPosition(), new GKitButton(kit));
+            }
         }
 
         return buttons;
     }
 
-    public static class GKitButton extends Button{
+    public static class GKitButton extends Button {
 
         Kit kit;
 
@@ -56,7 +55,7 @@ public class KitSelectionMenu extends Menu {
             itemCreator.setName(kit.getColor() + kit.getName());
             List<String> lore = new ArrayList<>();
             PlayerData playerData = PlayerData.getByName(player.getName());
-            if (player.hasPermission("frozedgkit."+kit.getName())) {
+            if (player.hasPermission("frozedgkit." + kit.getName())) {
                 if (playerData.hasExpired(kit)) {
                     FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.AVAILABLE").forEach(text -> lore.add(Color.translate(text).replace("<kit>", kit.getName())));
                 } else {
@@ -75,18 +74,18 @@ public class KitSelectionMenu extends Menu {
                 case RIGHT:
                 case LEFT:
                     PlayerData playerData = PlayerData.getByName(player.getName());
-                    if (!player.hasPermission("frozedgkit."+kit.getName())) return;
-                    if (playerData.hasExpired(kit)){
+                    if (!player.hasPermission("frozedgkit." + kit.getName())) return;
+                    if (playerData.hasExpired(kit)) {
                         player.closeInventory();
                         player.getInventory().clear();
                         player.getInventory().setArmorContents(null);
                         player.getInventory().setContents(kit.getInventory());
                         player.getInventory().setArmorContents(kit.getArmor());
-                        playerData.saveCooldown(System.currentTimeMillis(),kit);
+                        playerData.saveCooldown(System.currentTimeMillis(), kit);
                     } else {
                         player.closeInventory();
                         player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig()
-                                .getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>",playerData.getNiceExpire(kit))));
+                                .getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
                     }
                     break;
                 default:
@@ -94,7 +93,7 @@ public class KitSelectionMenu extends Menu {
             }
         }
 
-        public GKitButton(Kit kit){
+        public GKitButton(Kit kit) {
             this.kit = kit;
         }
     }
