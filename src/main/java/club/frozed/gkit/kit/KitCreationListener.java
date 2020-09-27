@@ -45,7 +45,7 @@ public class KitCreationListener implements Listener {
                 return;
             }
             kit.setCooldown(duration);
-            event.getPlayer().sendMessage(Color.translate("&aSuccess! &7You have been duration to &a" + Utils.formatTimeMillis(duration)));
+            event.getPlayer().sendMessage(Color.translate("&aSuccess! &7You have updated the &a" + kit.getName() + " GKit &7cooldown to &a" + Utils.formatTimeMillis(duration)));
             KitManagerEditionMenu.cooldownProcessPlayer.remove(event.getPlayer().getName());
             new KitManagerEditionMenu(kit).openMenu(event.getPlayer());
         }
