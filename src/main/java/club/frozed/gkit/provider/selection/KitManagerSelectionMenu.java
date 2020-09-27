@@ -1,6 +1,7 @@
 package club.frozed.gkit.provider.selection;
 
 import club.frozed.gkit.FrozedGKits;
+import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.provider.edition.KitManagerEditionMenu;
 import club.frozed.gkit.utils.chat.Color;
@@ -37,7 +38,7 @@ public class KitManagerSelectionMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         int slot = 0;
-        for (KitManager kitManager : KitManager.getKits()) {
+        for (Kit kitManager : KitManager.getKits()) {
             buttons.put(slot, new KitButton(kitManager));
             slot++;
         }
@@ -80,7 +81,7 @@ public class KitManagerSelectionMenu extends Menu {
 
     public static class KitButton extends Button {
 
-        KitManager kitManager;
+        Kit kitManager;
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -102,7 +103,7 @@ public class KitManagerSelectionMenu extends Menu {
             }
             switch (clickType) {
                 case RIGHT:
-                    new KitManagerEditionMenu().openMenu(player);
+                    new KitManagerEditionMenu(kitManager).openMenu(player);
                     player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
                     break;
                 case MIDDLE:
@@ -113,7 +114,7 @@ public class KitManagerSelectionMenu extends Menu {
             }
         }
 
-        public KitButton(KitManager kit) {
+        public KitButton(Kit kit) {
             this.kitManager = kit;
         }
     }
