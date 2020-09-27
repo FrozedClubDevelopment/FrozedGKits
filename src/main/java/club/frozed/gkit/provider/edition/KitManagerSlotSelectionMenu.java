@@ -57,12 +57,16 @@ public class KitManagerSlotSelectionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
+
+            String availableMsg = kitSlot.getColor() + kitSlot.getName() + " &7can assigned to this slot!";
+            String un_availableMsg = kitSlot.getColor() + kitSlot.getName() + " &7is assigned to this slot [&b" + kitSlot.getSlotPosition() + "&7]";
+
             return new ItemCreator(Material.STAINED_GLASS_PANE)
                     .setName(Color.translate(isAvailable ? "&aAvailable" : "&cNot Available"))
                     .setDurability(isAvailable ? 5 : 14)
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
-                            kitSlot.getColor() + kitSlot.getName() + " &7is assigned to this slot [&b" + kitSlot.getSlotPosition() + "&7]",
+                            isAvailable ? availableMsg : un_availableMsg,
                             Color.MENU_BAR))
                     .get();
         }
