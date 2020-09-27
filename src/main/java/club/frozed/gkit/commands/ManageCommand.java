@@ -128,7 +128,7 @@ public class ManageCommand extends BaseCommand {
 
                 KitManager.saveKit(kitName, player);
                 player.sendMessage(Color.translate("&aSuccessfully saved &f" + kitName + " &akit."));
-                //player.getInventory().clear();
+                //data.getInventory().clear();
                 break;
             case "list":
                 List<String> list = new ArrayList<>();
