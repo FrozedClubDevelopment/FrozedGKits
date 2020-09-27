@@ -56,4 +56,30 @@ public class Utils {
             return false;
         }
     }
+
+    public static String formatTimeMillis(long millis) {
+        long seconds = millis / 1000L;
+        if (seconds <= 0L)
+            return "0 seconds";
+        long minutes = seconds / 60L;
+        seconds %= 60L;
+        long hours = minutes / 60L;
+        minutes %= 60L;
+        long day = hours / 24L;
+        hours %= 24L;
+        long years = day / 365L;
+        day %= 365L;
+        StringBuilder time = new StringBuilder();
+        if (years != 0L)
+            time.append(years).append((years == 1L) ? " year " : " years ");
+        if (day != 0L)
+            time.append(day).append((day == 1L) ? " day " : " days ");
+        if (hours != 0L)
+            time.append(hours).append((hours == 1L) ? " hour " : " hours ");
+        if (minutes != 0L)
+            time.append(minutes).append((minutes == 1L) ? " minute " : " minutes ");
+        if (seconds != 0L)
+            time.append(seconds).append((seconds == 1L) ? " second " : " seconds ");
+        return time.toString().trim();
+    }
 }
