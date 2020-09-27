@@ -1,6 +1,7 @@
 package club.frozed.gkit.commands;
 
 import club.frozed.gkit.FrozedGKits;
+import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.provider.selection.KitManagerSelectionMenu;
 import club.frozed.gkit.utils.chat.Clickable;
@@ -56,12 +57,12 @@ public class ManageCommand extends BaseCommand {
                     player.sendMessage(Color.translate("&cPlease specify a kit name"));
                     return;
                 }
-                if (KitManager.kitExists(kitName)) {
+                if (Kit.kitExists(kitName)) {
                     player.sendMessage(Color.translate("&aThat kit already exists"));
                     return;
                 }
 
-                new KitManager(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
+                new Kit(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
                 player.sendMessage(Color.translate("&aSuccessfully created &f" + kitName + " &akit"));
                 break;
             case "delete":
@@ -91,7 +92,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                KitManager kitManager = KitManager.getKitByName(kitName);
+                Kit kitManager = Kit.getKitByName(kitName);
                 if (kitManager == null) {
                     player.sendMessage(Color.translate("&cCouldn't find kit"));
                     return;
@@ -119,7 +120,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                KitManager kits = KitManager.getKitByName(kitName);
+                Kit kits = Kit.getKitByName(kitName);
                 if (kits == null) {
                     player.sendMessage(Color.translate("&cCouldn't find kit"));
                     return;
@@ -135,8 +136,8 @@ public class ManageCommand extends BaseCommand {
                 list.add(Color.SB_BAR);
                 list.add(Color.translate("&aAvailable Kits:"));
 
-                for (KitManager kit : KitManager.getKits()) {
-                    list.add(Color.translate("&b ▶ &7{&f" + kit.getName() + "&7}"));
+                for (Kit kit : KitManager.getKits()) {
+                    list.add(Color.translate("&b ▶ &7{&f" + kit.getName() + "&7} &7▶ " + (kit.isEnabled() ? "&aenabled." : "&cdisabled.")));
                 }
 
                 list.add(Color.SB_BAR);
