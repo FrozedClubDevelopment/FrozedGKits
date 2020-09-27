@@ -5,6 +5,7 @@ import club.frozed.gkit.commands.GkitCommand;
 import club.frozed.gkit.commands.ManageCommand;
 import club.frozed.gkit.kit.KitCreationListener;
 import club.frozed.gkit.kit.KitManager;
+import club.frozed.gkit.provider.player.PlayerLoadListener;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.command.CommandFramework;
 import club.frozed.gkit.utils.config.FileConfig;
@@ -22,7 +23,7 @@ public final class FrozedGKits extends JavaPlugin {
     private static FrozedGKits instance;
     private CommandFramework commandFramework;
 
-    private FileConfig pluginConfig, kitsConfig;
+    private FileConfig pluginConfig, kitsConfig, dataConfig;
     private KitManager kitManager;
 
     @Override
@@ -37,17 +38,18 @@ public final class FrozedGKits extends JavaPlugin {
         commandFramework = new CommandFramework(this);
         pluginConfig = new FileConfig(this, "config.yml");
         kitsConfig = new FileConfig(this, "kits.yml");
+        dataConfig = new FileConfig(this, "data.yml");
 
 
         KitManager.loadKits();
 
         /*
          * TODO-LIST:
-         *      - Menu de selección de kit (para users)
-         *      - Menu de seleccion de color para el kit (para admin)
-         *      - Menu de seleccion de slot para el kit (para admin)
+         *      - Menu de selección de kit (para users) -> DOn3
+         *      - Menu de seleccion de color para el kit (para admin) -> DoN3
+         *      - Menu de seleccion de slot para el kit (para admin) -> Don3
          *      - Hacer cooldown de kit
-         *      - Verificar que todos los menus funcionen 100%  
+         *      - Verificar que todos los menus funcionen 100%
          */
 
         /*if (!KitManager.getKits().isEmpty()) {
@@ -63,6 +65,7 @@ public final class FrozedGKits extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new ButtonListener(), this);
         Bukkit.getPluginManager().registerEvents(new KitCreationListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerLoadListener(), this);
 
         new GkitCommand();
         new ManageCommand();
