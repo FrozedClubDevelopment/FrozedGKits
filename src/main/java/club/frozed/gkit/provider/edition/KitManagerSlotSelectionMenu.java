@@ -3,19 +3,18 @@ package club.frozed.gkit.provider.edition;
 import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
-import club.frozed.gkit.provider.selection.KitManagerSelectionMenu;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
 import club.frozed.gkit.utils.menu.Menu;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Elb1to
@@ -26,7 +25,7 @@ public class KitManagerSlotSelectionMenu extends Menu {
 
     private Kit kitManager;
 
-    public KitManagerSlotSelectionMenu(Kit kitManager){
+    public KitManagerSlotSelectionMenu(Kit kitManager) {
         this.kitManager = kitManager;
     }
 
@@ -34,7 +33,7 @@ public class KitManagerSlotSelectionMenu extends Menu {
 
     @Override
     public String getTitle(Player player) {
-        return Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-MANAGER-MENU.INVENTORY-TITLE"));
+        return Color.translate("&b&lEditing Kit &f▶ " + kitManager.getColor() + kitManager.getName());
     }
 
     @Override
@@ -42,36 +41,42 @@ public class KitManagerSlotSelectionMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         for (Kit kitManager : KitManager.getKits()) {
-            buttons.put(kitManager.getSlotPosition(), new SlotButton(false,kitManager));
+            buttons.put(kitManager.getSlotPosition(), new SlotButton(false, kitManager));
         }
 
         setPlaceholder(true);
-        setPlaceholderButton(new SlotButton(true,kitManager));
+        setPlaceholderButton(new SlotButton(true, kitManager));
 
         return buttons;
     }
 
-    private static class SlotButton extends Button{
+    private static class SlotButton extends Button {
 
-        private boolean xd;
-
+        private boolean isAvailable;
         private final Kit kitSlot;
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(Material.STAINED_GLASS_PANE).setName(Color.translate(xd ? "&aAvailable" : "&cNot available")).setDurability(xd ? 5 : 14).get();
+            return new ItemCreator(Material.STAINED_GLASS_PANE)
+                    .setName(Color.translate(isAvailable ? "&aAvailable" : "&cNot Available"))
+                    .setDurability(isAvailable ? 5 : 14)
+                    .setLore(Arrays.asList(
+                            Color.MENU_BAR,
+                            kitSlot.getColor() + kitSlot.getName() + " &7is assigned to this slot [&b" + kitSlot.getSlotPosition() + "&7]",
+                            Color.MENU_BAR))
+                    .get();
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            if (!xd) return;
+            if (!isAvailable) return;
             kitSlot.setSlotPosition(slot);
             playSuccess(player);
             new KitManagerEditionMenu(kitSlot).openMenu(player);
         }
 
-        public SlotButton(boolean xd, Kit kitSlot) {
-            this.xd = xd;
+        public SlotButton(boolean isAvailable, Kit kitSlot) {
+            this.isAvailable = isAvailable;
             this.kitSlot = kitSlot;
         }
     }
