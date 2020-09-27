@@ -31,9 +31,10 @@ public class KitCreationListener implements Listener {
             KitManager.getKitNameState().remove(player.getName());
         }
     }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCooldownCreation(AsyncPlayerChatEvent event) {
-        if (KitManagerEditionMenu.cooldownProcessPlayer.containsKey(event.getPlayer().getName())){
+        if (KitManagerEditionMenu.cooldownProcessPlayer.containsKey(event.getPlayer().getName())) {
             event.setCancelled(true);
             Kit kit = KitManagerEditionMenu.cooldownProcessPlayer.get(event.getPlayer().getName());
             long duration;
