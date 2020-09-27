@@ -140,15 +140,11 @@ public class DateUtils {
 
     public static String formatDateDiff(Calendar fromDate, Calendar toDate) {
         boolean future = false;
-        if (toDate.equals(fromDate))
-            return "now";
-        if (toDate.after(fromDate))
-            future = true;
+        if (toDate.equals(fromDate)) return "now";
+        if (toDate.after(fromDate)) future = true;
         StringBuilder sb = new StringBuilder();
         int[] types = {1, 2, 5, 11, 12, 13};
-        String[] names = {
-                "year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes",
-                "second", "seconds"};
+        String[] names = {"year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds"};
         int accuracy = 0;
         for (int i = 0; i < types.length && accuracy <= 2; i++) {
             int diff = dateDiff(types[i], fromDate, toDate, future);
