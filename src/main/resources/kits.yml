@@ -3,7 +3,7 @@ KITS:
     ICON: DIAMOND_HELMET
     SLOT: 2
     COLOR: '&b&o'
-    COOLDOWN: 0L
+    COOLDOWN: 216000000
     ENABLED: true
     ARMOR: t@313;t@312;t@311;t@310;
     INVENTORY: t@276;t@373:d@16421;t@373:d@16451;t@373:d@16418;t@373:d@16450;t@373:d@16457;t@373:d@16452;t@327;t@368:a@16;null;null;t@403;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;t@364:a@64;
@@ -11,7 +11,7 @@ KITS:
     ICON: GOLD_HELMET
     SLOT: 5
     COLOR: '&6&o'
-    COOLDOWN: 0L
+    COOLDOWN: 216000000
     ENABLED: true
     ARMOR: t@317;t@316;t@315;t@314;
     INVENTORY: t@276;t@373:d@16421;t@373:d@16421;t@373:d@8226;t@370:a@64;t@353:a@64;t@377:a@64;t@368:a@16;t@364:a@64;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;null;
