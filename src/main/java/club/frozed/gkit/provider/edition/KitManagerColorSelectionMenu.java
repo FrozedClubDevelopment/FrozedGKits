@@ -1,6 +1,5 @@
 package club.frozed.gkit.provider.edition;
 
-import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
@@ -17,27 +16,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Elb1to
  * Project: FrozedGKits
  * Date: 09/26/2020 @ 13:39
  */
-public class KitManagerColorSelectionMenu  extends Menu {
+public class KitManagerColorSelectionMenu extends Menu {
 
     private Kit kit;
-    
-    @Getter @Setter private static boolean italic,bold = false;
 
-    public KitManagerColorSelectionMenu(Kit kit){
+    @Getter @Setter private static boolean italic, bold = false;
+
+    public KitManagerColorSelectionMenu(Kit kit) {
         this.kit = kit;
     }
 
     @Override
     public String getTitle(Player player) {
-        return Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-MANAGER-MENU.INVENTORY-TITLE"));
+        return Color.translate("&b&lEditing Kit &f▶ " + kit.getColor() + kit.getName());
     }
 
     @Override
@@ -45,23 +45,23 @@ public class KitManagerColorSelectionMenu  extends Menu {
 
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(0, new ColorSelectionButton(kit,ChatColor.BLACK));
-        buttons.put(1, new ColorSelectionButton(kit,ChatColor.DARK_GREEN));
-        buttons.put(2, new ColorSelectionButton(kit,ChatColor.DARK_AQUA));
-        buttons.put(3, new ColorSelectionButton(kit,ChatColor.DARK_PURPLE));
-        buttons.put(4, new ColorSelectionButton(kit,ChatColor.GOLD));
-        buttons.put(5, new ColorSelectionButton(kit,ChatColor.GRAY));
-        buttons.put(6, new ColorSelectionButton(kit,ChatColor.DARK_GRAY));
-        buttons.put(7, new ColorSelectionButton(kit,ChatColor.BLUE));
-        buttons.put(8, new ColorSelectionButton(kit,ChatColor.GREEN));
-        buttons.put(9, new ColorSelectionButton(kit,ChatColor.AQUA));
-        buttons.put(10, new ColorSelectionButton(kit,ChatColor.RED));
-        buttons.put(11, new ColorSelectionButton(kit,ChatColor.LIGHT_PURPLE));
-        buttons.put(12, new ColorSelectionButton(kit,ChatColor.YELLOW));
-        buttons.put(13, new ColorSelectionButton(kit,ChatColor.WHITE));
+        buttons.put(0, new ColorSelectionButton(kit, ChatColor.RED));
+        buttons.put(1, new ColorSelectionButton(kit, ChatColor.GOLD));
+        buttons.put(2, new ColorSelectionButton(kit, ChatColor.YELLOW));
+        buttons.put(3, new ColorSelectionButton(kit, ChatColor.DARK_GREEN));
+        buttons.put(4, new ColorSelectionButton(kit, ChatColor.GREEN));
+        buttons.put(5, new ColorSelectionButton(kit, ChatColor.AQUA));
+        buttons.put(6, new ColorSelectionButton(kit, ChatColor.DARK_AQUA));
+        buttons.put(7, new ColorSelectionButton(kit, ChatColor.BLUE));
+        buttons.put(8, new ColorSelectionButton(kit, ChatColor.LIGHT_PURPLE));
+        buttons.put(9, new ColorSelectionButton(kit, ChatColor.DARK_PURPLE));
+        buttons.put(10, new ColorSelectionButton(kit, ChatColor.WHITE));
+        buttons.put(11, new ColorSelectionButton(kit, ChatColor.GRAY));
+        buttons.put(12, new ColorSelectionButton(kit, ChatColor.DARK_GRAY));
+        buttons.put(13, new ColorSelectionButton(kit, ChatColor.BLACK));
 
-        buttons.put(16,new ColorBold());
-        buttons.put(17,new ColorItalic());
+        buttons.put(16, new ColorBold());
+        buttons.put(17, new ColorItalic());
 
         return buttons;
     }
@@ -69,7 +69,6 @@ public class KitManagerColorSelectionMenu  extends Menu {
     public static class ColorSelectionButton extends Button {
 
         Kit kitManager;
-
         ChatColor color;
 
         @Override
@@ -82,12 +81,12 @@ public class KitManagerColorSelectionMenu  extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            if (isItalic() && isBold() || isBold() && isItalic()){
-                kitManager.setColor("&"+color.getChar()+"&l&o");
-            } else if (isItalic()){
-                kitManager.setColor("&"+color.getChar()+"&o");
-            } else if (isBold()){
-                kitManager.setColor("&"+color.getChar()+ "&l");
+            if (isItalic() && isBold() || isBold() && isItalic()) {
+                kitManager.setColor("&" + color.getChar() + "&l&o");
+            } else if (isItalic()) {
+                kitManager.setColor("&" + color.getChar() + "&o");
+            } else if (isBold()) {
+                kitManager.setColor("&" + color.getChar() + "&l");
             }
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
             new KitManagerEditionMenu(kitManager).openMenu(player);
@@ -99,54 +98,52 @@ public class KitManagerColorSelectionMenu  extends Menu {
         }
     }
 
-    public static class ColorBold extends Button{
+    public static class ColorBold extends Button {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(Material.BOWL)
+            return new ItemCreator(Material.CLAY_BALL)
                     .setName("&f&lBold")
-                    .setLore(Arrays.asList((isBold() ? "&aenabled" : "disabled.")))
+                    .setLore(Collections.singletonList((isBold() ? "&7 ▶ &aEnabled" : "&7 ▶ &cDisabled")))
                     .get();
-
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            playSound(player,!isBold());
+            playSound(player, !isBold());
             setBold(!isBold());
         }
 
-        private void playSound(Player player, boolean b){
-            if (b){
-                player.playSound(player.getLocation(),Sound.SUCCESSFUL_HIT,2F,2F);
+        private void playSound(Player player, boolean b) {
+            if (b) {
+                player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 2F, 2F);
             } else {
-                player.playSound(player.getLocation(),Sound.ITEM_BREAK,2F,2F);
+                player.playSound(player.getLocation(), Sound.ITEM_BREAK, 2F, 2F);
             }
         }
     }
 
-    public static class ColorItalic extends Button{
+    public static class ColorItalic extends Button {
 
         @Override
         public ItemStack getButtonItem(Player player) {
             return new ItemCreator(Material.FEATHER)
                     .setName("&f&oItalic")
-                    .setLore(Arrays.asList((isItalic() ? "&aenabled" : "disabled.")))
+                    .setLore(Collections.singletonList((isItalic() ? "&7 ▶ &aEnabled" : "&7 ▶ &cDisabled")))
                     .get();
-
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            playSound(player,!isItalic());
+            playSound(player, !isItalic());
             setItalic(!isItalic());
         }
 
-        private void playSound(Player player, boolean b){
-            if (b){
-                player.playSound(player.getLocation(),Sound.SUCCESSFUL_HIT,2F,2F);
+        private void playSound(Player player, boolean b) {
+            if (b) {
+                player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 2F, 2F);
             } else {
-                player.playSound(player.getLocation(),Sound.ITEM_BREAK,2F,2F);
+                player.playSound(player.getLocation(), Sound.ITEM_BREAK, 2F, 2F);
             }
         }
     }
