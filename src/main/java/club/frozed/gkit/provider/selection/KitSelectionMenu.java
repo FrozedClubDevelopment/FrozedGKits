@@ -4,6 +4,7 @@ import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.kit.Kit;
 import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.provider.data.PlayerData;
+import club.frozed.gkit.utils.Utils;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
@@ -57,9 +58,15 @@ public class KitSelectionMenu extends Menu {
             PlayerData playerData = PlayerData.getByName(player.getName());
             if (player.hasPermission("frozedgkit." + kit.getName())) {
                 if (playerData.hasExpired(kit)) {
-                    FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.AVAILABLE").forEach(text -> lore.add(Color.translate(text).replace("<kit>", kit.getName())));
+                    FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.AVAILABLE")
+                            .forEach(text -> lore.add(Color.translate(text)
+                                    .replace("<kit>", kit.getName())
+                                    .replace("<kit-cooldown>", Utils.formatTimeMillis(kit.getCooldown()))));
                 } else {
-                    FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.TIME-LEFT").forEach(text -> lore.add(Color.translate(text).replace("<time-left>", playerData.getNiceExpire(kit))));
+                    FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.TIME-LEFT")
+                            .forEach(text -> lore.add(Color.translate(text)
+                                    .replace("<time-left>", playerData.getNiceExpire(kit))
+                                    .replace("<kit-cooldown>", Utils.formatTimeMillis(kit.getCooldown()))));
                 }
             } else {
                 FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.NO-PERMS").forEach(text -> lore.add(Color.translate(text)));
@@ -81,8 +88,7 @@ public class KitSelectionMenu extends Menu {
                 playerData.saveCooldown(System.currentTimeMillis(), kit);
             } else {
                 player.closeInventory();
-                player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig()
-                        .getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
+                player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
             }
         }
 
