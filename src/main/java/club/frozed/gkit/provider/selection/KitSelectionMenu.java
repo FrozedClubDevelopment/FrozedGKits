@@ -78,17 +78,24 @@ public class KitSelectionMenu extends Menu {
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             PlayerData playerData = PlayerData.getByName(player.getName());
-            if (!player.hasPermission("frozedgkit." + kit.getName())) return;
-            if (playerData.hasExpired(kit)) {
-                player.closeInventory();
-                player.getInventory().clear();
-                player.getInventory().setArmorContents(null);
-                player.getInventory().setContents(kit.getInventory());
-                player.getInventory().setArmorContents(kit.getArmor());
-                playerData.saveCooldown(System.currentTimeMillis(), kit);
-            } else {
-                player.closeInventory();
-                player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
+            switch (clickType){
+                case LEFT:
+                    if (!player.hasPermission("frozedgkit." + kit.getName())) return;
+                    if (playerData.hasExpired(kit)) {
+                        player.closeInventory();
+                        player.getInventory().clear();
+                        player.getInventory().setArmorContents(null);
+                        player.getInventory().setContents(kit.getInventory());
+                        player.getInventory().setArmorContents(kit.getArmor());
+                        playerData.saveCooldown(System.currentTimeMillis(), kit);
+                    } else {
+                        player.closeInventory();
+                        player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
+                    }
+                    break;
+                case RIGHT:
+                    new KitPreviewMenu(kit).openMenu(player);
+                    break;
             }
         }
 
