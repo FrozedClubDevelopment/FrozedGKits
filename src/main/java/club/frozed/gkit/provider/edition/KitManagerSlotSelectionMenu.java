@@ -76,8 +76,7 @@ public class KitManagerSlotSelectionMenu extends Menu {
             if (!isAvailable) return;
             kitSlot.setSlotPosition(slot);
             playSuccess(player);
-            KitManager.saveKits();
-            KitManager.loadKits();
+            kitSlot.saveKit(player);
             new KitManagerEditionMenu(kitSlot).openMenu(player);
         }
 

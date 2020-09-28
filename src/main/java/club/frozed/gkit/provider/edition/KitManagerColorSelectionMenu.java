@@ -92,8 +92,7 @@ public class KitManagerColorSelectionMenu extends Menu {
                 kitManager.setColor("&" + color.getChar());
             }
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
-            KitManager.saveKits();
-            KitManager.loadKits();
+            kitManager.saveKit(player);
             new KitManagerEditionMenu(kitManager).openMenu(player);
         }
 

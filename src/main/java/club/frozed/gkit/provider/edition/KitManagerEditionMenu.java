@@ -76,8 +76,7 @@ public class KitManagerEditionMenu extends Menu {
             }
             kitManager.setIcon(new ItemStack(player.getItemOnCursor().getType()));
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
-            KitManager.saveKits();
-            KitManager.loadKits();
+            kitManager.saveKit(player);
         }
 
         public KitIconButton(Kit kit) {
@@ -134,8 +133,7 @@ public class KitManagerEditionMenu extends Menu {
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             Kit.getKitByName(kitManager.getName()).setEnabled(!kitManager.isEnabled());
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
-            KitManager.saveKits();
-            KitManager.loadKits();
+            kitManager.saveKit(player);
         }
 
         public KitToggleButton(Kit kit) {
