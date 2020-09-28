@@ -89,7 +89,7 @@ public class KitManagerColorSelectionMenu extends Menu {
             } else if (isBold()) {
                 kitManager.setColor("&" + color.getChar() + "&l");
             } else {
-                kitManager.setColor("&"+color.getChar());
+                kitManager.setColor("&" + color.getChar());
             }
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
             KitManager.saveKits();
