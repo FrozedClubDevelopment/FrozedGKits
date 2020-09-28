@@ -52,12 +52,8 @@ public class Kit {
         configCursor.set(this.name  + ".COLOR", getColor());
         configCursor.set(this.name  + ".COOLDOWN", getCooldown());
         configCursor.set(this.name  + ".ENABLED", isEnabled());
-        if (this.armor == null){
-            configCursor.set(this.name  + ".ARMOR", InventoryUtils.serializeInventory(player.getInventory().getArmorContents()));
-        }
-        if (this.inventory == null){
-            configCursor.set(this.name  + ".INVENTORY", InventoryUtils.serializeInventory(player.getInventory().getContents()));
-        }
+        configCursor.set(name + ".ARMOR", InventoryUtils.serializeInventory(player.getInventory().getArmorContents()));
+        configCursor.set(name + ".INVENTORY", InventoryUtils.serializeInventory(player.getInventory().getContents()));
         configCursor.save();
 
         KitManager.loadKits();
