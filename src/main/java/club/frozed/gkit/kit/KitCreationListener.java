@@ -27,6 +27,8 @@ public class KitCreationListener implements Listener {
 
             new Kit(event.getMessage(), new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
             player.sendMessage(Color.translate("&aSuccessfully created &f" + event.getMessage() + " &akit"));
+            KitManager.saveKits();
+            KitManager.loadKits();
 
             KitManager.getKitNameState().remove(player.getName());
         }
@@ -47,6 +49,8 @@ public class KitCreationListener implements Listener {
             kit.setCooldown(duration);
             event.getPlayer().sendMessage(Color.translate("&aSuccess! &7You have updated the &a" + kit.getName() + " GKit &7cooldown to &a" + Utils.formatTimeMillis(duration)));
             KitManagerEditionMenu.cooldownProcessPlayer.remove(event.getPlayer().getName());
+            KitManager.saveKits();
+            KitManager.loadKits();
             new KitManagerEditionMenu(kit).openMenu(event.getPlayer());
         }
     }

@@ -1,6 +1,7 @@
 package club.frozed.gkit.provider.edition;
 
 import club.frozed.gkit.kit.Kit;
+import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.items.WoolColors;
@@ -91,6 +92,8 @@ public class KitManagerColorSelectionMenu extends Menu {
                 kitManager.setColor("&"+color.getChar());
             }
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
+            KitManager.saveKits();
+            KitManager.loadKits();
             new KitManagerEditionMenu(kitManager).openMenu(player);
         }
 
