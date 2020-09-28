@@ -228,7 +228,7 @@ public class InventoryUtils {
                 }
                 case "e": {
                     if (item != null) {
-                        item.addEnchantment(
+                        item.addUnsafeEnchantment(
                                 Enchantment.getById(Integer.parseInt(itemAttribute[1])),
                                 Integer.parseInt(itemAttribute[2])
                         );
