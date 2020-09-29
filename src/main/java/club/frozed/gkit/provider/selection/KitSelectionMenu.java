@@ -85,8 +85,8 @@ public class KitSelectionMenu extends Menu {
                         player.closeInventory();
                         player.getInventory().clear();
                         player.getInventory().setArmorContents(null);
-                        player.getInventory().setContents(kit.getInventory());
                         player.getInventory().setArmorContents(kit.getArmor());
+                        player.getInventory().setContents(kit.getInventory().getContents());
                         playerData.saveCooldown(System.currentTimeMillis(), kit);
                     } else {
                         player.closeInventory();

@@ -6,6 +6,7 @@ import club.frozed.gkit.utils.items.InventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -25,9 +26,9 @@ public class Kit {
     private long cooldown = 0L;
 
     private ItemStack[] armor;
-    private ItemStack[] inventory;
+    private Inventory inventory;
 
-    public Kit(String name, ItemStack icon, int slotPosition, String color, boolean enabled, ItemStack[] armor, ItemStack[] itemStacks) {
+    public Kit(String name, ItemStack icon, int slotPosition, String color, boolean enabled, ItemStack[] armor, Inventory inventory) {
         this.name = name;
         this.icon = icon;
         this.slotPosition = slotPosition;
@@ -35,7 +36,7 @@ public class Kit {
         this.enabled = enabled;
 
         this.armor = armor;
-        this.inventory = itemStacks;
+        this.inventory = inventory;
 
         KitManager.getKits().add(this);
     }
@@ -52,8 +53,8 @@ public class Kit {
         configCursor.set(this.name  + ".COLOR", getColor());
         configCursor.set(this.name  + ".COOLDOWN", getCooldown());
         configCursor.set(this.name  + ".ENABLED", isEnabled());
-        configCursor.set(name + ".ARMOR", InventoryUtils.serializeInventory(player.getInventory().getArmorContents()));
-        configCursor.set(name + ".INVENTORY", InventoryUtils.serializeInventory(player.getInventory().getContents()));
+        configCursor.set(name + ".ARMOR", InventoryUtils.itemStackArrayToBase64(player.getInventory().getArmorContents()));
+        configCursor.set(name + ".INVENTORY", InventoryUtils.toBase64(player.getInventory()));
         configCursor.save();
 
         KitManager.loadKits();

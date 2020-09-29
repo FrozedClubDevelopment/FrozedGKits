@@ -25,7 +25,7 @@ public class KitCreationListener implements Listener {
         if (KitManager.getKitNameState().contains(player.getName())) {
             event.setCancelled(true);
 
-            Kit kit = new Kit(event.getMessage(), new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
+            Kit kit = new Kit(event.getMessage(), new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getArmorContents(), player.getInventory());
             player.sendMessage(Color.translate("&aSuccessfully created &f" + event.getMessage() + " &akit"));
             kit.saveKit(player);
             KitManager.getKitNameState().remove(player.getName());
