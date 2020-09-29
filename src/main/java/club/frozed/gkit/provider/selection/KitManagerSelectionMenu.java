@@ -58,23 +58,23 @@ public class KitManagerSelectionMenu extends Menu {
                             Color.MENU_BAR,
                             "&a ▶ &lLEFT-CLICK-HERE &ato create new a kit",
                             "&e ▶ &lRIGHT-CLICK &eto edit an existing kit",
-                            "&c ▶ &lSHIFT-CLICK &cto delete an existing kit",
-                            Color.MENU_BAR)
-                    )
+                            "&c ▶ &lMIDDLE-CLICK &cto delete an existing kit",
+                            Color.MENU_BAR))
                     .get();
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
+            player.closeInventory();
             if (clickType.isLeftClick()) {
-                player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
-
-                player.closeInventory();
-                player.sendMessage(Color.CHAT_BAR);
-                player.sendMessage(Color.translate("&8[&b&l!&8] &aType the name of the new kit..."));
-                player.sendMessage(Color.CHAT_BAR);
-
-                KitManager.getKitNameState().add(player.getName());
+                if (!KitManager.getKitNameState().contains(player.getName())) {
+                    playSuccess(player);
+                    player.sendMessage(Color.translate("&8[&b&l!&8] &aType the name of the new kit..."));
+                    KitManager.getKitNameState().add(player.getName());
+                } else {
+                    playFail(player);
+                    player.sendMessage(Color.translate("&8[&4&l!&8] &cYou are already creating a new kit! Please type the name..."));
+                }
             }
         }
     }
@@ -91,8 +91,7 @@ public class KitManagerSelectionMenu extends Menu {
                             Color.MENU_BAR,
                             kitManager.getColor() + "&l" + kitManager.getName() + " &bKit",
                             "&7Click here to edit this kit.",
-                            Color.MENU_BAR)
-                    )
+                            Color.MENU_BAR))
                     .get();
         }
 
@@ -107,7 +106,7 @@ public class KitManagerSelectionMenu extends Menu {
                     player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0F, 1.0F);
                     break;
                 case MIDDLE:
-                    KitManager.deleteKit(kitManager.getName());
+                    KitManager.deleteKit(kitManager);
                     player.sendMessage(Color.translate("&8[&b&l!&8] &7You have deleted the kit: &a" + kitManager.getName()));
                     player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0F, 1.0F);
                     break;

@@ -61,4 +61,8 @@ public final class FrozedGKits extends JavaPlugin {
         KitManager.saveKits();
         instance = null;
     }
+
+    public void createKitsConfig() {
+        this.kitsConfig = new FileConfig(this, "kits.yml");
+    }
 }
