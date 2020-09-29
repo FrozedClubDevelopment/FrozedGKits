@@ -80,21 +80,24 @@ public class KitSelectionMenu extends Menu {
             PlayerData playerData = PlayerData.getByName(player.getName());
             switch (clickType){
                 case LEFT:
-                    if (!player.hasPermission("frozedgkit." + kit.getName())) return;
-                    if (playerData.hasExpired(kit)) {
-                        player.closeInventory();
-                        player.getInventory().clear();
-                        player.getInventory().setArmorContents(null);
-                        player.getInventory().setContents(kit.getInventory());
-                        player.getInventory().setArmorContents(kit.getArmor());
-                        playerData.saveCooldown(System.currentTimeMillis(), kit);
-                    } else {
-                        player.closeInventory();
-                        player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
+                    if (player.hasPermission("frozedgkit." + kit.getName())) {
+                        if (playerData.hasExpired(kit)) {
+                            player.closeInventory();
+                            player.getInventory().clear();
+                            player.getInventory().setArmorContents(null);
+                            player.getInventory().setArmorContents(kit.getArmor());
+                            player.getInventory().setContents(kit.getInventory().getContents());
+                            playerData.saveCooldown(System.currentTimeMillis(), kit);
+                        } else {
+                            player.closeInventory();
+                            player.sendMessage(Color.translate(FrozedGKits.getInstance().getPluginConfig().getConfig().getString("KIT-SELECTION-MENU.COOLDOWN-MSG").replace("<time-left>", playerData.getNiceExpire(kit))));
+                        }
                     }
                     break;
                 case RIGHT:
                     new KitPreviewMenu(kit).openMenu(player);
+                    break;
+                default:
                     break;
             }
         }

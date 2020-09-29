@@ -9,8 +9,10 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +38,16 @@ public class KitManager {
             String color = FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".COLOR");
             boolean enabled = FrozedGKits.getInstance().getKitsConfig().getConfig().getBoolean("KITS." + kit + ".ENABLED");
             long cooldown = FrozedGKits.getInstance().getKitsConfig().getConfig().getLong("KITS." + kit + ".COOLDOWN");
+            ItemStack[] armor = null;
+            Inventory inventory = null;
 
-            ItemStack[] armor = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".ARMOR"));
-            ItemStack[] inventory = InventoryUtils.deserializeInventory(configCursor.getString(kit + ".INVENTORY"));
+            try {
+                armor = InventoryUtils.itemStackArrayFromBase64(configCursor.getString(kit + ".ARMOR"));
+                inventory = InventoryUtils.fromBase64(configCursor.getString(kit + ".INVENTORY"));
+            } catch (IOException exception) {
+                System.out.println("Error in load kits.");
+            }
+
 
             Kit newKit = new Kit(kit, icon, slotPosition, color, enabled, armor, inventory);
             newKit.setCooldown(cooldown);
@@ -55,8 +64,8 @@ public class KitManager {
         configCursor.set(name + ".COLOR", Kit.getKitByName(name).getColor());
         configCursor.set(name + ".COOLDOWN", Kit.getKitByName(name).getCooldown());
         configCursor.set(name + ".ENABLED", Kit.getKitByName(name).isEnabled());
-        configCursor.set(name + ".ARMOR", InventoryUtils.serializeInventory(player.getInventory().getArmorContents()));
-        configCursor.set(name + ".INVENTORY", InventoryUtils.serializeInventory(player.getInventory().getContents()));
+        configCursor.set(name + ".ARMOR", InventoryUtils.itemStackArrayToBase64(player.getInventory().getArmorContents()));
+        configCursor.set(name + ".INVENTORY", InventoryUtils.toBase64(player.getInventory()));
         configCursor.save();
 
         loadKits();
@@ -81,8 +90,8 @@ public class KitManager {
                 configCursor.set(kit.getName() + ".COLOR", kit.getColor());
                 configCursor.set(kit.getName() + ".COOLDOWN", kit.getCooldown());
                 configCursor.set(kit.getName() + ".ENABLED", kit.isEnabled());
-                configCursor.set(kit.getName() + ".ARMOR", InventoryUtils.serializeInventory(kit.getArmor()));
-                configCursor.set(kit.getName() + ".INVENTORY", InventoryUtils.serializeInventory(kit.getInventory()));
+                configCursor.set(kit.getName() + ".ARMOR", InventoryUtils.itemStackArrayToBase64(kit.getArmor()));
+                configCursor.set(kit.getName() + ".INVENTORY", InventoryUtils.toBase64(kit.getInventory()));
             });
         }
     }

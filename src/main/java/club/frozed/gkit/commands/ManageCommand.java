@@ -62,7 +62,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                new Kit(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getContents(), player.getInventory().getArmorContents());
+                new Kit(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getArmorContents(), player.getInventory());
                 player.sendMessage(Color.translate("&aSuccessfully created &f" + kitName + " &akit"));
                 break;
             case "delete":
@@ -99,7 +99,7 @@ public class ManageCommand extends BaseCommand {
                 }
 
                 player.setGameMode(GameMode.CREATIVE);
-                player.getInventory().setContents(kitManager.getInventory());
+                player.getInventory().setContents(kitManager.getInventory().getContents());
                 player.getInventory().setArmorContents(kitManager.getArmor());
 
                 Clickable clickable = new Clickable(

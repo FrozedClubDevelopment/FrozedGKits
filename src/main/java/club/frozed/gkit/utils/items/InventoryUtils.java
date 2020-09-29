@@ -1,281 +1,158 @@
 package club.frozed.gkit.utils.items;
 
-import com.google.common.base.Preconditions;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 /**
- * Created by Elb1to
+ * Created by Ryzeon
  * Project: FrozedGKits
  * Date: 09/25/2020 @ 17:58
  */
 public class InventoryUtils {
 
-    public static ItemStack[] deepClone(ItemStack[] origin) {
-        Preconditions.checkNotNull((Object) origin, "Origin cannot be null");
-        ItemStack[] cloned = new ItemStack[origin.length];
-        for (int i = 0; i < origin.length; ++i) {
-            ItemStack next = origin[i];
-            cloned[i] = next == null ? null : next.clone();
-        }
-        return cloned;
+    public static String[] playerInventoryToBase64(PlayerInventory playerInventory) throws IllegalStateException {
+        //get the main content part, this doesn't return the armor
+        String content = toBase64(playerInventory);
+        String armor = itemStackArrayToBase64(playerInventory.getArmorContents());
+
+        return new String[] { content, armor };
     }
 
-    public static int getSafestInventorySize(int initialSize) {
-        return (initialSize + 8) / 9 * 9;
-    }
+    /**
+     *
+     * A method to serialize an {@link ItemStack} array to Base64 String.
+     *
+     * <p />
+     *
+     * Based off of {@link #toBase64(Inventory)}.
+     *
+     * @param items to turn into a Base64 String.
+     * @return Base64 string of the items.
+     * @throws IllegalStateException
+     */
+    public static String itemStackArrayToBase64(ItemStack[] items) throws IllegalStateException {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
 
-    public static int repairItem(ItemStack item) {
-        if (item == null) {
-            return 0;
-        }
-        Material material = Material.getMaterial(item.getTypeId());
-        if (material.isBlock() || material.getMaxDurability() < 1) {
-            return 0;
-        }
-        if (item.getDurability() <= 0) {
-            return 0;
-        }
-        item.setDurability((short) 0);
-        return 1;
-    }
+            // Write the size of the inventory
+            dataOutput.writeInt(items.length);
 
-    public static void removeItem(Inventory inventory, Material type, short data, int quantity) {
-        ItemStack[] contents = inventory.getContents();
-        boolean compareDamage = type.getMaxDurability() == 0;
-        block0:
-        for (int i = quantity; i > 0; --i) {
-            for (ItemStack content : contents) {
-                if (content == null || content.getType() != type || compareDamage && content.getData().getData() != data)
-                    continue;
-                if (content.getAmount() <= 1) {
-                    inventory.removeItem(content);
-                    continue block0;
-                }
-                content.setAmount(content.getAmount() - 1);
-                continue block0;
-            }
-        }
-    }
-
-    public static int countAmount(Inventory inventory, Material type, short data) {
-        ItemStack[] contents = inventory.getContents();
-        boolean compareDamage = type.getMaxDurability() == 0;
-        int counter = 0;
-        for (ItemStack item : contents) {
-            if (item == null || item.getType() != type || compareDamage && item.getData().getData() != data) continue;
-            counter += item.getAmount();
-        }
-        return counter;
-    }
-
-    public static boolean isEmpty(Inventory inventory) {
-        return isEmpty(inventory, true);
-    }
-
-    public static boolean isEmpty(Inventory inventory, boolean checkArmour) {
-        ItemStack[] contents;
-        boolean result = true;
-        for (ItemStack content : contents = inventory.getContents()) {
-            if (content == null || content.getType() == Material.AIR) continue;
-            result = false;
-            break;
-        }
-        if (!result) return false;
-        if (checkArmour && inventory instanceof PlayerInventory) {
-            for (ItemStack content : contents = ((PlayerInventory) inventory).getArmorContents()) {
-                if (content == null || content.getType() == Material.AIR) continue;
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
-
-    public static boolean clickedTopInventory(InventoryDragEvent event) {
-        InventoryView view = event.getView();
-        Inventory topInventory = view.getTopInventory();
-        if (topInventory == null) {
-            return false;
-        }
-        boolean result = false;
-        int size = topInventory.getSize();
-        for (Integer entry : event.getNewItems().keySet()) {
-            if (entry >= size) continue;
-            result = true;
-            break;
-        }
-        return result;
-    }
-
-    public static String serializeInventory(ItemStack[] source) {
-        StringBuilder builder = new StringBuilder();
-
-        for (ItemStack itemStack : source) {
-            builder.append(serializeItemStack(itemStack));
-            builder.append(";");
-        }
-
-        return builder.toString();
-    }
-
-    public static ItemStack[] deserializeInventory(String source) {
-        List<ItemStack> items = new ArrayList<>();
-        String[] split = source.split(";");
-
-        for (String piece : split) {
-            items.add(deserializeItemStack(piece));
-        }
-
-        return items.toArray(new ItemStack[items.size()]);
-    }
-
-    public static void fillInventory(Inventory inventory) {
-        for (int i = 0; i < inventory.getSize(); i++) {
-            if (inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
-                inventory.setItem(i, new ItemCreator(Material.STAINED_GLASS_PANE, 7).setName(" ").get());
-            }
-        }
-    }
-
-    public static String serializeItemStack(ItemStack item) {
-        StringBuilder builder = new StringBuilder();
-
-        if (item == null) {
-            return "null";
-        }
-
-        String isType = String.valueOf(item.getType().getId());
-        builder.append("t@").append(isType);
-
-        if (item.getDurability() != 0) {
-            String isDurability = String.valueOf(item.getDurability());
-            builder.append(":d@").append(isDurability);
-        }
-
-        if (item.getAmount() != 1) {
-            String isAmount = String.valueOf(item.getAmount());
-            builder.append(":a@").append(isAmount);
-        }
-
-        Map<Enchantment, Integer> isEnch = item.getEnchantments();
-
-        if (isEnch.size() > 0) {
-            for (Map.Entry<Enchantment, Integer> ench : isEnch.entrySet()) {
-                builder.append(":e@").append(ench.getKey().getId()).append("@").append(ench.getValue());
-            }
-        }
-
-        if (item.hasItemMeta()) {
-            ItemMeta imeta = item.getItemMeta();
-
-            if (imeta.hasDisplayName()) {
-                builder.append(":dn@").append(imeta.getDisplayName());
+            // Save every element in the list
+            for (int i = 0; i < items.length; i++) {
+                dataOutput.writeObject(items[i]);
             }
 
-            if (imeta.hasLore()) {
-                builder.append(":l@").append(imeta.getLore());
-            }
+            // Serialize that array
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save item stacks.", e);
         }
-
-        return builder.toString();
     }
 
-    public static ItemStack deserializeItemStack(String in) {
-        ItemStack item = null;
-        ItemMeta meta = null;
+    /**
+     * A method to serialize an inventory to Base64 string.
+     *
+     * <p />
+     *
+     * Special thanks to Comphenix in the Bukkit forums or also known
+     * as aadnk on GitHub.
+     *
+     * <a href="https://gist.github.com/aadnk/8138186">Original Source</a>
+     *
+     * @param inventory to serialize
+     * @return Base64 string of the provided inventory
+     * @throws IllegalStateException
+     */
+    public static String toBase64(Inventory inventory) throws IllegalStateException {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
 
-        if (in.equals("null")) {
-            return new ItemStack(Material.AIR);
-        }
+            // Write the size of the inventory
+            dataOutput.writeInt(inventory.getSize());
 
-        String[] split = in.split(":");
-
-        for (String itemInfo : split) {
-            String[] itemAttribute = itemInfo.split("@");
-            String s2 = itemAttribute[0];
-
-            switch (s2) {
-                case "t": {
-                    item = new ItemStack(Material.getMaterial(Integer.parseInt(itemAttribute[1])));
-                    meta = item.getItemMeta();
-                    break;
-                }
-                case "d": {
-                    if (item != null) {
-                        item.setDurability(Short.parseShort(itemAttribute[1]));
-                        break;
-                    }
-                    break;
-                }
-                case "a": {
-                    if (item != null) {
-                        item.setAmount(Integer.parseInt(itemAttribute[1]));
-                        break;
-                    }
-                    break;
-                }
-                case "e": {
-                    if (item != null) {
-                        item.addUnsafeEnchantment(
-                                Enchantment.getById(Integer.parseInt(itemAttribute[1])),
-                                Integer.parseInt(itemAttribute[2])
-                        );
-                        break;
-                    }
-                    break;
-                }
-                case "dn": {
-                    if (meta != null) {
-                        meta.setDisplayName(itemAttribute[1]);
-                        break;
-                    }
-                    break;
-                }
-                case "l": {
-                    itemAttribute[1] = itemAttribute[1].replace("[", "");
-                    itemAttribute[1] = itemAttribute[1].replace("]", "");
-                    List<String> lore = Arrays.asList(itemAttribute[1].split(","));
-
-                    for (int x = 0; x < lore.size(); ++x) {
-                        String s = lore.get(x);
-
-                        if (s != null) {
-                            if (s.toCharArray().length != 0) {
-                                if (s.charAt(0) == ' ') {
-                                    s = s.replaceFirst(" ", "");
-                                }
-
-                                lore.set(x, s);
-                            }
-                        }
-                    }
-
-                    if (meta != null) {
-                        meta.setLore(lore);
-                        break;
-                    }
-
-                    break;
-                }
+            // Save every element in the list
+            for (int i = 0; i < inventory.getSize(); i++) {
+                dataOutput.writeObject(inventory.getItem(i));
             }
-        }
 
-        if (meta != null && (meta.hasDisplayName() || meta.hasLore())) {
-            item.setItemMeta(meta);
+            // Serialize that array
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save item stacks.", e);
         }
+    }
 
-        return item;
+    /**
+     *
+     * A method to get an {@link Inventory} from an encoded, Base64, string.
+     *
+     * <p />
+     *
+     * Special thanks to Comphenix in the Bukkit forums or also known
+     * as aadnk on GitHub.
+     *
+     * <a href="https://gist.github.com/aadnk/8138186">Original Source</a>
+     *
+     * @param data Base64 string of data containing an inventory.
+     * @return Inventory created from the Base64 string.
+     * @throws IOException
+     */
+    public static Inventory fromBase64(String data) throws IOException {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            Inventory inventory = Bukkit.getServer().createInventory(null, dataInput.readInt());
+
+            // Read the serialized inventory
+            for (int i = 0; i < inventory.getSize(); i++) {
+                inventory.setItem(i, (ItemStack) dataInput.readObject());
+            }
+
+            dataInput.close();
+            return inventory;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Unable to decode class type.", e);
+        }
+    }
+
+    /**
+     * Gets an array of ItemStacks from Base64 string.
+     *
+     * <p />
+     *
+     * Base off of {@link #fromBase64(String)}.
+     *
+     * @param data Base64 string to convert to ItemStack array.
+     * @return ItemStack array created from the Base64 string.
+     * @throws IOException
+     */
+    public static ItemStack[] itemStackArrayFromBase64(String data) throws IOException {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack[] items = new ItemStack[dataInput.readInt()];
+
+            // Read the serialized inventory
+            for (int i = 0; i < items.length; i++) {
+                items[i] = (ItemStack) dataInput.readObject();
+            }
+
+            dataInput.close();
+            return items;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Unable to decode class type.", e);
+        }
     }
 }
