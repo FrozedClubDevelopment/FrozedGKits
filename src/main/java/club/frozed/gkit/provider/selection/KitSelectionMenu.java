@@ -131,7 +131,7 @@ public class KitSelectionMenu extends Menu {
                 world.dropItem(player.getLocation(), kit.getArmor()[1]);
             }
             if (player.getInventory().getBoots() == null || player.getInventory().getBoots().getType() == Material.AIR) {
-                player.getInventory().setBoots(kit.getArmor()[1]);
+                player.getInventory().setBoots(kit.getArmor()[0]);
             } else {
                 world.dropItem(player.getLocation(), kit.getArmor()[0]);
             }
