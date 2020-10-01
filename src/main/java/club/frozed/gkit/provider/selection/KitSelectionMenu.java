@@ -105,6 +105,7 @@ public class KitSelectionMenu extends Menu {
 
         private void dropKitPlayer(Kit kit, Player player) {
             World world = player.getWorld();
+
             if (getInventoryAvailableSlots(player) > kit.getInventory().getContents().length) {
                 for (ItemStack itemStack : kit.getInventory().getContents()) {
                     world.dropItemNaturally(player.getLocation(), itemStack);
@@ -113,6 +114,7 @@ public class KitSelectionMenu extends Menu {
                 player.getInventory().clear();
                 player.getInventory().setContents(kit.getInventory().getContents());
             }
+
             if (player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() == Material.AIR) {
                 player.getInventory().setHelmet(kit.getArmor()[3]);
             } else {
