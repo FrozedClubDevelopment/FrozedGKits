@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -125,6 +126,16 @@ public class InventoryUtils {
         } catch (ClassNotFoundException e) {
             throw new IOException("Unable to decode class type.", e);
         }
+    }
+
+    public static boolean hasAvailableSlot(Player player) {
+        Inventory inv = player.getInventory();
+        for (ItemStack item : inv.getContents()) {
+            if (item == null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
