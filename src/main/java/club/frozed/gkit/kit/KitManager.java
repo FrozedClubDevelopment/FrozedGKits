@@ -71,8 +71,11 @@ public class KitManager {
         loadKits();
     }
 
-    public static void deleteKit(String name) {
-        kits.remove(Kit.getKitByName(name));
+    public static void deleteKit(Kit name) {
+        kits.remove(name);
+        FrozedGKits.getInstance().getKitsConfig().getFile().delete();
+        FrozedGKits.getInstance().createKitsConfig();
+        saveKits();
     }
 
     public static void saveKits() {

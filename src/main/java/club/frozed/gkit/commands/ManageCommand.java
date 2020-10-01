@@ -77,7 +77,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                KitManager.deleteKit(kitName);
+                KitManager.deleteKit(Kit.getKitByName(kitName));
                 player.sendMessage(Color.translate("&aSuccessfully deleted &f" + kitName + " &akit"));
                 break;
             case "edit":
