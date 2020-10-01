@@ -93,9 +93,11 @@ public class KitSelectionMenu extends Menu {
                     }
                     break;
                 case RIGHT:
+                case MIDDLE:
+                case SHIFT_LEFT:
+                case SHIFT_RIGHT:
+                case DOUBLE_CLICK:
                     new KitPreviewMenu(kit).openMenu(player);
-                    break;
-                default:
                     break;
             }
 
