@@ -80,11 +80,11 @@ public class KitSelectionMenu extends Menu {
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             PlayerData playerData = PlayerData.getByName(player.getName());
-            switch (clickType){
+            switch (clickType) {
                 case LEFT:
                     if (player.hasPermission("frozedgkit." + kit.getName())) {
                         if (playerData.hasExpired(kit)) {
-                            dropKitPlayer(kit,player);
+                            dropKitPlayer(kit, player);
                             playerData.saveCooldown(System.currentTimeMillis(), kit);
                         } else {
                             player.closeInventory();
@@ -101,46 +101,46 @@ public class KitSelectionMenu extends Menu {
 
         }
 
-        private void dropKitPlayer(Kit kit, Player player){
+        private void dropKitPlayer(Kit kit, Player player) {
             World world = player.getWorld();
-            if (getInventoryAvailableSlots(player) > kit.getInventory().getContents().length){
-                for (ItemStack itemStack : kit.getInventory().getContents()){
-                    world.dropItemNaturally(player.getLocation(),itemStack);
+            if (getInventoryAvailableSlots(player) > kit.getInventory().getContents().length) {
+                for (ItemStack itemStack : kit.getInventory().getContents()) {
+                    world.dropItemNaturally(player.getLocation(), itemStack);
                 }
             } else {
                 player.getInventory().clear();
                 player.getInventory().setContents(kit.getInventory().getContents());
             }
-            if (player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() == Material.AIR){
+            if (player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() == Material.AIR) {
                 player.getInventory().setHelmet(kit.getArmor()[3]);
             } else {
-                world.dropItemNaturally(player.getLocation(),kit.getArmor()[3]);
+                world.dropItemNaturally(player.getLocation(), kit.getArmor()[3]);
             }
-            if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() == Material.AIR){
+            if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() == Material.AIR) {
                 player.getInventory().setChestplate(kit.getArmor()[2]);
             } else {
-                world.dropItemNaturally(player.getLocation(),kit.getArmor()[2]);
+                world.dropItemNaturally(player.getLocation(), kit.getArmor()[2]);
             }
-            if (player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() == Material.AIR){
+            if (player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() == Material.AIR) {
                 player.getInventory().setLeggings(kit.getArmor()[1]);
             } else {
-                world.dropItemNaturally(player.getLocation(),kit.getArmor()[1]);
+                world.dropItemNaturally(player.getLocation(), kit.getArmor()[1]);
             }
-            if (player.getInventory().getBoots() == null || player.getInventory().getBoots().getType() == Material.AIR){
+            if (player.getInventory().getBoots() == null || player.getInventory().getBoots().getType() == Material.AIR) {
                 player.getInventory().setBoots(kit.getArmor()[1]);
             } else {
-                world.dropItemNaturally(player.getLocation(),kit.getArmor()[0]);
+                world.dropItemNaturally(player.getLocation(), kit.getArmor()[0]);
             }
         }
 
-        private int getInventoryAvailableSlots(Player player){
-           int slots = 0;
-           for (ItemStack itemStack : player.getInventory().getContents()){
-               if (itemStack.getType() != Material.AIR || itemStack != null){
-                   slots++;
-               }
-           }
-           return slots;
+        private int getInventoryAvailableSlots(Player player) {
+            int slots = 0;
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (itemStack.getType() != Material.AIR || itemStack != null) {
+                    slots++;
+                }
+            }
+            return slots;
         }
 
         public GKitButton(Kit kit) {
