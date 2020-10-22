@@ -1,9 +1,7 @@
 package club.frozed.gkit.utils.items;
 
-import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,11 +14,11 @@ import java.util.List;
  * Date: 22/10/2020 @ 16:46
  */
 
-public class ASD {
+public class InventoryUtils {
 
     public static Inventory toInventory(FileConfiguration config, String path) {
-        Inventory in = Bukkit.createInventory(null, 27);
-        for (int i = 0; i<27;i++) {
+        Inventory in = Bukkit.createInventory(null, 36);
+        for (int i = 0; i < 36 ;i++) {
             if (config.isItemStack(path + "." + i)) {
                 in.setItem(i, config.getItemStack(path + "." + i));
             }
@@ -51,7 +49,6 @@ public class ASD {
     }
 
     public static void saveItemStacks(ItemStack[] itemStacks, FileConfiguration config, String path) {
-        System.out.println(itemStacks.length);
         for (int i = 0; i< itemStacks.length; i++) {
             if (itemStacks[i] != null) {
                 config.set(path + "." + i, itemStacks[i]);
