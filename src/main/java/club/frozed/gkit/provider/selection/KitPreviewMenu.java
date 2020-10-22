@@ -36,8 +36,10 @@ public class KitPreviewMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int slot = 0;
         for (ItemStack itemStacks : kit.getInventory()){
-            buttons.put(slot,new itemButton(itemStacks));
-            slot++;
+            if (itemStacks != null) {
+                buttons.put(slot, new itemButton(itemStacks));
+                slot++;
+            }
         }
         ItemStack[] armor = kit.getArmor();
         if (armor[3] == null || armor[3].getType().equals(Material.AIR)){
@@ -82,6 +84,9 @@ public class KitPreviewMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
+            if (itemStack == null){
+                return new ItemStack(Material.STAINED_GLASS);
+            }
             return itemStack;
         }
         public itemButton(ItemStack itemStack){
