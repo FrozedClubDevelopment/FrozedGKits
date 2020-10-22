@@ -26,7 +26,6 @@ public class PlayerLoadListener implements Listener {
     }
 
     private void handledSaveDate(Player player) {
-        KitManagerEditionMenu.cooldownProcessPlayer.remove(player.getName());
         PlayerData playerData = PlayerData.getByName(player.getName());
         playerData.deletePlayer();
     }
