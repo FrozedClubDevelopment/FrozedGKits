@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  * Date: 09/25/2020 @ 18:06
  */
 public class GkitCommand extends BaseCommand {
-    @Command(name = "gkit", aliases = {"kits", "gkits"}, permission = "frozedgkits.use")
+    @Command(name = "gkit", aliases = {"kits", "gkits", "showgkits", "viewgkits", "gkitss", "getgkits"}, permission = "frozedgkits.use")
 
     public void onCommand(CommandArgs commandArgs) {
         Player player = commandArgs.getPlayer();

@@ -52,10 +52,10 @@ public class KitManagerEditionMenu extends Menu {
         return buttons;
     }
 
-    @Override
+    /*@Override
     public void onClose(Player player) {
         kitManager.saveKit(player);
-    }
+    }*/
 
     public static class KitIconButton extends Button {
 

@@ -1,5 +1,6 @@
 package club.frozed.gkit.provider.data;
 
+import club.frozed.gkit.provider.edition.KitManagerEditionMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +26,7 @@ public class PlayerLoadListener implements Listener {
     }
 
     private void handledSaveDate(Player player) {
+        KitManagerEditionMenu.cooldownProcessPlayer.remove(player.getName());
         PlayerData playerData = PlayerData.getByName(player.getName());
         playerData.deletePlayer();
     }
@@ -32,11 +34,13 @@ public class PlayerLoadListener implements Listener {
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
         handledSaveDate(e.getPlayer());
+        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getName());
     }
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e) {
         handledSaveDate(e.getPlayer());
+        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getName());
     }
 }
 

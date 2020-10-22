@@ -107,9 +107,11 @@ public class KitSelectionMenu extends Menu {
         private void dropKitPlayer(Kit kit, Player player) {
             World world = player.getWorld();
 
-            for (ItemStack stack : kit.getInventory().getContents()){
-                if (InventoryUtils.hasAvailableSlot(player)){
-                    player.getInventory().addItem(stack);
+            for (ItemStack stack : kit.getInventory().getContents()) {
+                if (InventoryUtils.hasAvailableSlot(player)) {
+                    if (stack != null) {
+                        player.getInventory().addItem(stack);
+                    }
                 } else {
                     world.dropItem(player.getLocation(), stack);
                 }
@@ -136,6 +138,7 @@ public class KitSelectionMenu extends Menu {
                 world.dropItem(player.getLocation(), kit.getArmor()[0]);
             }
         }
+
         public GKitButton(Kit kit) {
             this.kit = kit;
         }
