@@ -6,6 +6,7 @@ import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.provider.data.PlayerData;
 import club.frozed.gkit.utils.Utils;
 import club.frozed.gkit.utils.chat.Color;
+//import club.frozed.gkit.utils.items.InventoryUtils;
 import club.frozed.gkit.utils.items.InventoryUtils;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
@@ -113,7 +114,9 @@ public class KitSelectionMenu extends Menu {
                         player.getInventory().addItem(stack);
                     }
                 } else {
-                    world.dropItem(player.getLocation(), stack);
+                    if (stack != null) {
+                        world.dropItem(player.getLocation(), stack);
+                    }
                 }
             }
 
