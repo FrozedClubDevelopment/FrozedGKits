@@ -76,29 +76,25 @@ public class KitManager {
     }
 
     public static void deleteKit(Kit name) {
-        kits.remove(name);
-        FrozedGKits.getInstance().getKitsConfig().getFile().delete();
-        FrozedGKits.getInstance().createKitsConfig();
-        saveKits();
+//        kits.remove(name);
+//        FrozedGKits.getInstance().getKitsConfig().getFile().delete();
+//        FrozedGKits.getInstance().createKitsConfig();
+//        saveKits();
     }
 
     public static void saveKits() {
         ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
 
-        if (kits.isEmpty()) {
-            FrozedGKits.getInstance().getKitsConfig().getConfig().set("KITS", null);
-        } else {
-            kits.forEach(kit -> {
-                configCursor.set(kit.getName() + ".ICON", kit.getIcon());
-                configCursor.set(kit.getName() + ".SLOT", kit.getSlotPosition());
-                configCursor.set(kit.getName() + ".COLOR", kit.getColor());
-                configCursor.set(kit.getName() + ".COOLDOWN", kit.getCooldown());
-                configCursor.set(kit.getName() + ".ENABLED", kit.isEnabled());
-                InventoryUtils.saveInventory(kit.getInventory(),configCursor.getFileConfig().getConfig(),"KITS." + kit.getName() + ".INVENTORY");
-                InventoryUtils.saveItemStacks(kit.getArmor(),configCursor.getFileConfig().getConfig(),"KITS." + kit.getName() + ".ARMOR");
+        kits.forEach(kit -> {
+            configCursor.set(kit.getName() + ".ICON", kit.getIcon());
+            configCursor.set(kit.getName() + ".SLOT", kit.getSlotPosition());
+            configCursor.set(kit.getName() + ".COLOR", kit.getColor());
+            configCursor.set(kit.getName() + ".COOLDOWN", kit.getCooldown());
+            configCursor.set(kit.getName() + ".ENABLED", kit.isEnabled());
+            InventoryUtils.saveInventory(kit.getInventory(), configCursor.getFileConfig().getConfig(), "KITS." + kit.getName() + ".INVENTORY");
+            InventoryUtils.saveItemStacks(kit.getArmor(), configCursor.getFileConfig().getConfig(), "KITS." + kit.getName() + ".ARMOR");
 //                configCursor.set(kit.getName() + ".ARMOR", InventoryUtils.itemStackArrayToBase64(kit.getArmor()));
 //                configCursor.set(kit.getName() + ".INVENTORY", InventoryUtils.toBase64(kit.getInventory()));
-            });
-        }
+        });
     }
 }
