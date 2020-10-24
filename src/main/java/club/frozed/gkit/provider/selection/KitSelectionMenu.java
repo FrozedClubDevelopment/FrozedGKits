@@ -123,22 +123,30 @@ public class KitSelectionMenu extends Menu {
             if (player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() == Material.AIR) {
                 player.getInventory().setHelmet(kit.getArmor()[3]);
             } else {
-                world.dropItem(player.getLocation(), kit.getArmor()[3]);
+                if (kit.getArmor()[3] != null) {
+                    world.dropItem(player.getLocation(), kit.getArmor()[3]);
+                }
             }
             if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() == Material.AIR) {
                 player.getInventory().setChestplate(kit.getArmor()[2]);
             } else {
-                world.dropItem(player.getLocation(), kit.getArmor()[2]);
+                if (kit.getArmor()[2] != null) {
+                    world.dropItem(player.getLocation(), kit.getArmor()[2]);
+                }
             }
             if (player.getInventory().getLeggings() == null || player.getInventory().getLeggings().getType() == Material.AIR) {
                 player.getInventory().setLeggings(kit.getArmor()[1]);
             } else {
-                world.dropItem(player.getLocation(), kit.getArmor()[1]);
+                if (kit.getArmor()[1] != null) {
+                    world.dropItem(player.getLocation(), kit.getArmor()[1]);
+                }
             }
             if (player.getInventory().getBoots() == null || player.getInventory().getBoots().getType() == Material.AIR) {
                 player.getInventory().setBoots(kit.getArmor()[0]);
             } else {
-                world.dropItem(player.getLocation(), kit.getArmor()[0]);
+                if (kit.getArmor()[0] != null) {
+                    world.dropItem(player.getLocation(), kit.getArmor()[0]);
+                }
             }
         }
 
