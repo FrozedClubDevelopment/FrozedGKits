@@ -105,6 +105,16 @@ public class KitSelectionMenu extends Menu {
 
         }
 
+        @Override
+        public boolean shouldCancel(Player player, int slot, ClickType clickType) {
+            return true;
+        }
+
+        @Override
+        public boolean shouldUpdate(Player player, int slot, ClickType clickType) {
+            return false;
+        }
+
         private void dropKitPlayer(Kit kit, Player player) {
             World world = player.getWorld();
 
