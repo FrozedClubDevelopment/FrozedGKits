@@ -7,10 +7,7 @@ import club.frozed.gkit.utils.config.FileConfig;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ryzeon
@@ -25,14 +22,21 @@ public class PlayerData {
     @Getter public static List<PlayerData> playersData = new ArrayList<>();
 
     private String name;
+    private UUID uuid;
 
-    public PlayerData(String string) {
+    public PlayerData(String string, UUID uuid) {
         this.name = string;
+        this.uuid = uuid;
         playersData.add(this);
+
     }
 
-    public static PlayerData getByName(String name) {
+    public static PlayerData getPlayerData(String name) {
         return PlayerData.getPlayersData().stream().filter(playerData -> playerData.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public static PlayerData getPlayerData(UUID uuid) {
+        return PlayerData.getPlayersData().stream().filter(playerData -> playerData.getUuid() == uuid).findFirst().orElse(null);
     }
 
     public boolean hasExpired(Kit kit) {
@@ -54,11 +58,11 @@ public class PlayerData {
     public void saveCooldown(Long addedDate, Kit kit) {
         FileConfig playerConfig = FrozedGKits.getInstance().getDataConfig();
 
-        playerConfig.getConfig().set(this.name + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE", addedDate);
+        playerConfig.getConfig().set(this.uuid + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE", addedDate);
         playerConfig.save();
     }
 
     public Long getAddedCooldownDate(Kit kit) {
-        return FrozedGKits.getInstance().getDataConfig().getConfig().getLong(this.name + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE");
+        return FrozedGKits.getInstance().getDataConfig().getConfig().getLong(this.uuid + ".COOLDOWNS." + kit.getName() + ".ADDED-DATE");
     }
 }

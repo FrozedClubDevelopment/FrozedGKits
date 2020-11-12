@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Elb1to
@@ -27,7 +28,7 @@ public class KitManagerEditionMenu extends Menu {
 
     private final Kit kitManager;
 
-    @Getter public static Map<String, Kit> cooldownProcessPlayer = new HashMap<>();
+    @Getter public static Map<UUID, Kit> cooldownProcessPlayer = new HashMap<>();
 
     @Override
     public String getTitle(Player player) {
@@ -164,7 +165,7 @@ public class KitManagerEditionMenu extends Menu {
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             player.closeInventory();
-            cooldownProcessPlayer.put(player.getName(), kitManager);
+            cooldownProcessPlayer.put(player.getUniqueId(), kitManager);
             player.sendMessage(Color.translate("&aEnter kit cooldown duration."));
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }

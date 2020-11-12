@@ -59,7 +59,7 @@ public class KitSelectionMenu extends Menu {
             ItemCreator itemCreator = new ItemCreator(kit.getIcon());
             itemCreator.setName(kit.getColor() + kit.getName());
             List<String> lore = new ArrayList<>();
-            PlayerData playerData = PlayerData.getByName(player.getName());
+            PlayerData playerData = PlayerData.getPlayerData(player.getUniqueId());
             if (player.hasPermission("frozedgkit." + kit.getName())) {
                 if (playerData.hasExpired(kit)) {
                     FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.AVAILABLE")
@@ -81,7 +81,7 @@ public class KitSelectionMenu extends Menu {
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            PlayerData playerData = PlayerData.getByName(player.getName());
+            PlayerData playerData = PlayerData.getPlayerData(player.getUniqueId());
             switch (clickType) {
                 case LEFT:
                     if (player.hasPermission("frozedgkit." + kit.getName())) {

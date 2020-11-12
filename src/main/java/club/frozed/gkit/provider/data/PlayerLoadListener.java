@@ -19,27 +19,27 @@ public class PlayerLoadListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
-        PlayerData playerData = PlayerData.getByName(e.getName());
+        PlayerData playerData = PlayerData.getPlayerData(e.getUniqueId());
         if (playerData == null) {
-            playerData = new PlayerData(e.getName());
+            playerData = new PlayerData(e.getName(), e.getUniqueId());
         }
     }
 
     private void handledSaveDate(Player player) {
-        PlayerData playerData = PlayerData.getByName(player.getName());
+        PlayerData playerData = PlayerData.getPlayerData(player.getUniqueId());
         playerData.deletePlayer();
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
         handledSaveDate(e.getPlayer());
-        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getName());
+        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void onPlayerKickEvent(PlayerKickEvent e) {
         handledSaveDate(e.getPlayer());
-        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getName());
+        KitManagerEditionMenu.cooldownProcessPlayer.remove(e.getPlayer().getUniqueId());
     }
 }
 
