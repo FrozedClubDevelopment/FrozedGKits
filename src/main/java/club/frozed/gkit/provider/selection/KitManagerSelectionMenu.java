@@ -67,10 +67,10 @@ public class KitManagerSelectionMenu extends Menu {
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             player.closeInventory();
             if (clickType.isLeftClick()) {
-                if (!KitManager.getKitNameState().contains(player.getName())) {
+                if (!KitManager.getKitNameState().contains(player.getUniqueId())) {
                     playSuccess(player);
                     player.sendMessage(Color.translate("&8[&b&l!&8] &aType the name of the new kit..."));
-                    KitManager.getKitNameState().add(player.getName());
+                    KitManager.getKitNameState().add(player.getUniqueId());
                 } else {
                     playFail(player);
                     player.sendMessage(Color.translate("&8[&4&l!&8] &cYou are already creating a new kit! Please type the name..."));

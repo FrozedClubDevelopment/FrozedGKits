@@ -22,21 +22,21 @@ public class KitCreationListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerKitCreation(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (KitManager.getKitNameState().contains(player.getName())) {
+        if (KitManager.getKitNameState().contains(player.getUniqueId())) {
             event.setCancelled(true);
 
             Kit kit = new Kit(event.getMessage(), new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getArmorContents(), player.getInventory());
             player.sendMessage(Color.translate("&aSuccessfully created &f" + event.getMessage() + " &akit"));
             kit.saveKit(player);
-            KitManager.getKitNameState().remove(player.getName());
+            KitManager.getKitNameState().remove(player.getUniqueId());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCooldownCreation(AsyncPlayerChatEvent event) {
-        if (KitManagerEditionMenu.cooldownProcessPlayer.containsKey(event.getPlayer().getName())) {
+        if (KitManagerEditionMenu.cooldownProcessPlayer.containsKey(event.getPlayer().getUniqueId())) {
             event.setCancelled(true);
-            Kit kit = KitManagerEditionMenu.cooldownProcessPlayer.get(event.getPlayer().getName());
+            Kit kit = KitManagerEditionMenu.cooldownProcessPlayer.get(event.getPlayer().getUniqueId());
             long duration;
             try {
                 duration = DateUtils.getDuration(event.getMessage());
@@ -46,7 +46,7 @@ public class KitCreationListener implements Listener {
             }
             kit.setCooldown(duration);
             event.getPlayer().sendMessage(Color.translate("&aSuccess! &7You have updated the &a" + kit.getName() + " GKit &7cooldown to &a" + Utils.formatTimeMillis(duration)));
-            KitManagerEditionMenu.cooldownProcessPlayer.remove(event.getPlayer().getName());
+            KitManagerEditionMenu.cooldownProcessPlayer.remove(event.getPlayer().getUniqueId());
             kit.saveKit(event.getPlayer());
             new KitManagerEditionMenu(kit).openMenu(event.getPlayer());
         }

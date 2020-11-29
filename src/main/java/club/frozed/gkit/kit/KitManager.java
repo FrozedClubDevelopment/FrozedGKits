@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Elb1to
@@ -26,7 +27,7 @@ import java.util.List;
 public class KitManager {
 
     @Getter private static List<Kit> kits = new ArrayList<>();
-    @Getter private static List<String> kitNameState = new ArrayList<>();
+    @Getter private static List<UUID> kitNameState = new ArrayList<>();
 
     public static void loadKits() {
         kits.clear();
