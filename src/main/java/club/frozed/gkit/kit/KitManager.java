@@ -26,13 +26,14 @@ import java.util.UUID;
 @Setter
 public class KitManager {
 
-    @Getter private static List<Kit> kits = new ArrayList<>();
-    @Getter private static List<UUID> kitNameState = new ArrayList<>();
+    @Getter
+    private static List<Kit> kits = new ArrayList<>();
+    @Getter
+    private static List<UUID> kitNameState = new ArrayList<>();
 
     public static void loadKits() {
         kits.clear();
 
-        ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
         for (String kit : FrozedGKits.getInstance().getKitsConfig().getConfig().getConfigurationSection("KITS").getKeys(false)) {
             ItemStack icon = new ItemStack(Material.valueOf(FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".ICON")));
             int slotPosition = FrozedGKits.getInstance().getKitsConfig().getConfig().getInt("KITS." + kit + ".SLOT");
@@ -43,9 +44,9 @@ public class KitManager {
             Inventory inventory = null;
 
             try {
-                armor = InventoryUtils.toItemStack(configCursor.getFileConfig().getConfig(), "KITS." + kit + ".ARMOR");
+                armor = InventoryUtils.toItemStack(FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + kit + ".ARMOR");
 //                armor = InventoryUtils.itemStackArrayFromBase64(configCursor.getString(kit + ".ARMOR"));
-                inventory = InventoryUtils.toInventory(configCursor.getFileConfig().getConfig(), "KITS." + kit + ".INVENTORY");
+                inventory = InventoryUtils.toInventory(FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + kit + ".INVENTORY");
 //                inventory = InventoryUtils.fromBase64(configCursor.getString(kit + ".INVENTORY"));
             } catch (Exception exception) {
                 System.out.println("Error in load kits.");
@@ -67,8 +68,8 @@ public class KitManager {
         configCursor.set(name + ".COLOR", Kit.getKitByName(name).getColor());
         configCursor.set(name + ".COOLDOWN", Kit.getKitByName(name).getCooldown());
         configCursor.set(name + ".ENABLED", Kit.getKitByName(name).isEnabled());
-        InventoryUtils.saveInventory(player.getInventory(),configCursor.getFileConfig().getConfig(),"KITS." + name + ".INVENTORY");
-        InventoryUtils.saveItemStacks(player.getInventory().getArmorContents(),configCursor.getFileConfig().getConfig(),"KITS." + name + ".ARMOR");
+        InventoryUtils.saveInventory(player.getInventory(), FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + name + ".INVENTORY");
+        InventoryUtils.saveItemStacks(player.getInventory().getArmorContents(), FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + name + ".ARMOR");
 //        configCursor.set(name + ".ARMOR", InventoryUtils.itemStackArrayToBase64(player.getInventory().getArmorContents()));
 //        configCursor.set(name + ".INVENTORY", InventoryUtils.toBase64(player.getInventory()));
         configCursor.save();
@@ -92,10 +93,11 @@ public class KitManager {
             configCursor.set(kit.getName() + ".COLOR", kit.getColor());
             configCursor.set(kit.getName() + ".COOLDOWN", kit.getCooldown());
             configCursor.set(kit.getName() + ".ENABLED", kit.isEnabled());
-            InventoryUtils.saveInventory(kit.getInventory(), configCursor.getFileConfig().getConfig(), "KITS." + kit.getName() + ".INVENTORY");
-            InventoryUtils.saveItemStacks(kit.getArmor(), configCursor.getFileConfig().getConfig(), "KITS." + kit.getName() + ".ARMOR");
+            InventoryUtils.saveInventory(kit.getInventory(), FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + kit.getName() + ".INVENTORY");
+            InventoryUtils.saveItemStacks(kit.getArmor(), FrozedGKits.getInstance().getKitsConfig().getConfig(), "KITS." + kit.getName() + ".ARMOR");
 //                configCursor.set(kit.getName() + ".ARMOR", InventoryUtils.itemStackArrayToBase64(kit.getArmor()));
 //                configCursor.set(kit.getName() + ".INVENTORY", InventoryUtils.toBase64(kit.getInventory()));
+            configCursor.save();
         });
     }
 }
