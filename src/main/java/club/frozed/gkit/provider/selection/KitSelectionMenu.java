@@ -56,7 +56,7 @@ public class KitSelectionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            ItemCreator itemCreator = new ItemCreator(kit.getIcon());
+            ItemCreator itemCreator = new ItemCreator(Material.valueOf(kit.getIcon()));
             itemCreator.setName(kit.getColor() + kit.getName());
             List<String> lore = new ArrayList<>();
             PlayerData playerData = PlayerData.getPlayerData(player.getUniqueId());

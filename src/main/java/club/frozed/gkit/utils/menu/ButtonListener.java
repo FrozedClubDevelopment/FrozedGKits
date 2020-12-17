@@ -58,7 +58,7 @@ public class ButtonListener implements Listener {
                     openMenu.openMenu(player);
                 }
                 if (event.isCancelled()) {
-                    Bukkit.getScheduler().runTaskLater(FrozedGKits.getInstance(), player::updateInventory, 1L);
+                    // Bukkit.getScheduler().runTaskLater(FrozedGKits.getInstance(), player::updateInventory, 1L);
                 }
             } else {
                 if ((event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) || event.getAction().equals(InventoryAction.HOTBAR_SWAP))) {

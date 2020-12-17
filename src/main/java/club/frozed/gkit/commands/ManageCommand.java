@@ -62,7 +62,7 @@ public class ManageCommand extends BaseCommand {
                     return;
                 }
 
-                new Kit(kitName, new ItemStack(Material.ENCHANTED_BOOK), 0, "&b", true, player.getInventory().getArmorContents(), player.getInventory());
+                new Kit(kitName, "ENCHANTED_BOOK", 0, "&b", true, player.getInventory().getArmorContents(), player.getInventory());
                 player.sendMessage(Color.translate("&aSuccessfully created &f" + kitName + " &akit"));
                 break;
             case "delete":

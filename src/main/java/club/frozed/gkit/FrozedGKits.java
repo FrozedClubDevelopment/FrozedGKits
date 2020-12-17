@@ -39,7 +39,9 @@ public final class FrozedGKits extends JavaPlugin {
         kitsConfig = new FileConfig(this, "kits.yml");
         dataConfig = new FileConfig(this, "data.yml");
 
-        KitManager.loadKits();
+        if (this.getKitsConfig().getConfig().contains("KITS")) {
+            KitManager.loadKits();
+        }
 
         Bukkit.getPluginManager().registerEvents(new ButtonListener(), this);
         Bukkit.getPluginManager().registerEvents(new KitCreationListener(), this);
@@ -59,6 +61,7 @@ public final class FrozedGKits extends JavaPlugin {
     @Override
     public void onDisable() {
         KitManager.saveKits();
+
         instance = null;
     }
 

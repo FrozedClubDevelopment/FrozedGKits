@@ -4,7 +4,6 @@ import club.frozed.gkit.FrozedGKits;
 import club.frozed.gkit.utils.chat.Color;
 import club.frozed.gkit.utils.config.ConfigCursor;
 import club.frozed.gkit.utils.items.InventoryUtils;
-//import club.frozed.gkit.utils.items.InventoryUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -22,20 +21,17 @@ import java.util.UUID;
  * Project: FrozedGKits
  * Date: 09/25/2020 @ 18:06
  */
-@Getter
-@Setter
+@Getter @Setter
 public class KitManager {
 
-    @Getter
-    private static List<Kit> kits = new ArrayList<>();
-    @Getter
-    private static List<UUID> kitNameState = new ArrayList<>();
+    @Getter private static List<Kit> kits = new ArrayList<>();
+    @Getter private static List<UUID> kitNameState = new ArrayList<>();
 
     public static void loadKits() {
         kits.clear();
 
         for (String kit : FrozedGKits.getInstance().getKitsConfig().getConfig().getConfigurationSection("KITS").getKeys(false)) {
-            ItemStack icon = new ItemStack(Material.valueOf(FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".ICON")));
+            String icon = FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".ICON");
             int slotPosition = FrozedGKits.getInstance().getKitsConfig().getConfig().getInt("KITS." + kit + ".SLOT");
             String color = FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".COLOR");
             boolean enabled = FrozedGKits.getInstance().getKitsConfig().getConfig().getBoolean("KITS." + kit + ".ENABLED");
@@ -63,7 +59,7 @@ public class KitManager {
     public static void saveKit(String name, Player player) {
         ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
 
-        configCursor.set(name + ".ICON", Kit.getKitByName(name).getIcon().getType().name());
+        configCursor.set(name + ".ICON", Kit.getKitByName(name).getIcon());
         configCursor.set(name + ".SLOT", Kit.getKitByName(name).getSlotPosition());
         configCursor.set(name + ".COLOR", Kit.getKitByName(name).getColor());
         configCursor.set(name + ".COOLDOWN", Kit.getKitByName(name).getCooldown());

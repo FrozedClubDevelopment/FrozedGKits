@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 public class Kit {
 
     private String name;
-    private ItemStack icon;
+    private String icon;
     private int slotPosition;
     private String color;
     private boolean enabled;
@@ -28,7 +28,7 @@ public class Kit {
     private ItemStack[] armor;
     private Inventory inventory;
 
-    public Kit(String name, ItemStack icon, int slotPosition, String color, boolean enabled, ItemStack[] armor, Inventory inventory) {
+    public Kit(String name, String icon, int slotPosition, String color, boolean enabled, ItemStack[] armor, Inventory inventory) {
         this.name = name;
         this.icon = icon;
         this.slotPosition = slotPosition;
@@ -48,7 +48,7 @@ public class Kit {
     public void saveKit(Player player) {
         ConfigCursor configCursor = new ConfigCursor(FrozedGKits.getInstance().getKitsConfig(), "KITS");
 
-        configCursor.set(this.name + ".ICON", getIcon().getType().name());
+        configCursor.set(this.name + ".ICON", getIcon());
         configCursor.set(this.name  + ".SLOT", getSlotPosition());
         configCursor.set(this.name  + ".COLOR", getColor());
         configCursor.set(this.name  + ".COOLDOWN", getCooldown());

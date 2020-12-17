@@ -85,7 +85,7 @@ public class KitManagerSelectionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(kitManager.getIcon())
+            return new ItemCreator(Material.valueOf(kitManager.getIcon()))
                     .setName(Color.translate(kitManager.getColor() + StringUtils.capitalize(kitManager.getName())))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,

@@ -64,13 +64,13 @@ public class KitManagerEditionMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            return new ItemCreator(kitManager.getIcon())
+            return new ItemCreator(Material.valueOf(kitManager.getIcon()))
                     .setName(Color.translate("&b&lKit Icon"))
                     .setLore(Arrays.asList(
                             Color.MENU_BAR,
                             "&7Drag and drop new kit icon here.",
                             " ",
-                            "&7Current Icon&f: &b" + kitManager.getIcon().getType().name(),
+                            "&7Current Icon&f: &b" + kitManager.getIcon(),
                             Color.MENU_BAR))
                     .get();
         }
@@ -80,7 +80,8 @@ public class KitManagerEditionMenu extends Menu {
             if (player.getItemOnCursor().getType() == null || player.getItemOnCursor().getType() == Material.AIR) {
                 return;
             }
-            kitManager.setIcon(player.getItemOnCursor());
+
+            kitManager.setIcon(player.getItemOnCursor().getType().name());
             player.playSound(player.getLocation(), Sound.NOTE_BASS, 1.0F, 1.0F);
         }
 
