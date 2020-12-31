@@ -21,11 +21,12 @@ import java.util.Map;
 
 public class KitPreviewMenu extends Menu {
 
-    private Kit kit;
+    private final Kit kit;
 
-    public KitPreviewMenu(Kit kit){
+    public KitPreviewMenu(Kit kit) {
         this.kit = kit;
     }
+
     @Override
     public String getTitle(Player player) {
         return Color.translate(kit.getColor() + kit.getName() + " &fKit preview");
@@ -35,23 +36,26 @@ public class KitPreviewMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int slot = 0;
-        for (ItemStack itemStacks : kit.getInventory()){
+
+        for (ItemStack itemStacks : kit.getInventory()) {
             if (itemStacks != null) {
-                buttons.put(slot, new itemButton(itemStacks));
+                buttons.put(slot, new ItemButton(itemStacks));
                 slot++;
             }
         }
+
         ItemStack[] armor = kit.getArmor();
-        if (armor[3] == null || armor[3].getType().equals(Material.AIR)){
-            buttons.put(47,new nullArmorButton("Helmet"));
+        if (armor[3] == null || armor[3].getType().equals(Material.AIR)) {
+            buttons.put(47, new NullArmorButton("Helmet"));
         } else {
-            buttons.put(47,new armorButton(armor[3]));
+            buttons.put(47, new ArmorButton(armor[3]));
         }
-        if (armor[2] == null || armor[2].getType().equals(Material.AIR)){
-            buttons.put(48,new nullArmorButton("Chestplate"));
+        if (armor[2] == null || armor[2].getType().equals(Material.AIR)) {
+            buttons.put(48, new NullArmorButton("Chestplate"));
         } else {
-            buttons.put(48,new armorButton(armor[2]));
+            buttons.put(48, new ArmorButton(armor[2]));
         }
+
         buttons.put(49, new Button() {
             @Override
             public ItemStack getButtonItem(Player player) {
@@ -64,66 +68,68 @@ public class KitPreviewMenu extends Menu {
             }
         });
 
-        if (armor[1] == null || armor[1].getType().equals(Material.AIR)){
-            buttons.put(50,new nullArmorButton("Leggings"));
+        if (armor[1] == null || armor[1].getType().equals(Material.AIR)) {
+            buttons.put(50, new NullArmorButton("Leggings"));
         } else {
-            buttons.put(50,new armorButton(armor[1]));
+            buttons.put(50, new ArmorButton(armor[1]));
         }
 
-        if (armor[0] == null || armor[0].getType().equals(Material.AIR)){
-            buttons.put(51,new nullArmorButton("Boots"));
+        if (armor[0] == null || armor[0].getType().equals(Material.AIR)) {
+            buttons.put(51, new NullArmorButton("Boots"));
         } else {
-            buttons.put(51,new armorButton(armor[0]));
+            buttons.put(51, new ArmorButton(armor[0]));
         }
+
         return buttons;
     }
 
-    private class itemButton extends Button {
+    @Override
+    public int getSize() {
+        return 9 * 6;
+    }
 
-        private ItemStack itemStack;
+    private class ItemButton extends Button {
+
+        private final ItemStack itemStack;
+
+        public ItemButton(ItemStack itemStack) {
+            this.itemStack = itemStack;
+        }
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            if (itemStack == null){
+            if (itemStack == null) {
                 return new ItemStack(Material.STAINED_GLASS);
             }
             return itemStack;
         }
-        public itemButton(ItemStack itemStack){
-            this.itemStack = itemStack;
-        }
     }
 
-    private class armorButton extends Button{
-        private ItemStack itemStack;
+    private class ArmorButton extends Button {
+
+        private final ItemStack itemStack;
+
+        public ArmorButton(ItemStack itemStack) {
+            this.itemStack = itemStack;
+        }
 
         @Override
         public ItemStack getButtonItem(Player player) {
             return itemStack;
         }
-
-        public armorButton(ItemStack itemStack) {
-            this.itemStack = itemStack;
-        }
     }
 
-    private class nullArmorButton extends Button {
+    private class NullArmorButton extends Button {
 
         String armor;
+
+        public NullArmorButton(String string) {
+            this.armor = string;
+        }
 
         @Override
         public ItemStack getButtonItem(Player player) {
             return new ItemCreator(Material.FIREBALL).setName("&7[&4!&7] &cNo " + armor).get();
         }
-
-        public nullArmorButton(String string){
-            this.armor = string;
-        }
-
-    }
-
-    @Override
-    public int getSize() {
-        return 9*6;
     }
 }

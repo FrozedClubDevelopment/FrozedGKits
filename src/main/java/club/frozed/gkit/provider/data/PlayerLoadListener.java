@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * Project: FrozedGKits
  * Date: 26/09/2020 @ 23:40
  */
-
 public class PlayerLoadListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

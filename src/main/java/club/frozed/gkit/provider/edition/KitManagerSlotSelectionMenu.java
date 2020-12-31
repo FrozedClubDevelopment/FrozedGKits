@@ -50,7 +50,7 @@ public class KitManagerSlotSelectionMenu extends Menu {
         return buttons;
     }
 
-    private static class SlotButton extends Button {
+    private class SlotButton extends Button {
 
         private boolean isAvailable;
         private final Kit kitSlot;

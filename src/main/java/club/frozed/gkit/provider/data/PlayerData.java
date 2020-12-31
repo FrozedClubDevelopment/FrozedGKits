@@ -15,8 +15,7 @@ import java.util.*;
  * Date: 26/09/2020 @ 23:04
  */
 
-@Getter
-@Setter
+@Getter @Setter
 public class PlayerData {
 
     @Getter public static List<PlayerData> playersData = new ArrayList<>();
@@ -28,7 +27,6 @@ public class PlayerData {
         this.name = string;
         this.uuid = uuid;
         playersData.add(this);
-
     }
 
     public static PlayerData getPlayerData(String name) {

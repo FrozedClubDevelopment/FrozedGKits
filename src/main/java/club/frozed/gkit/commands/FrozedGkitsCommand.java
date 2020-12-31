@@ -25,7 +25,5 @@ public class FrozedGkitsCommand extends BaseCommand {
         player.sendMessage(Color.translate("&7 ▶ &bWebsite&8: &fwww.frozed.club"));
         player.sendMessage(Color.translate("&7 ▶ &bDiscord&8: &fdiscord.frozed.club"));
         player.sendMessage(Color.CHAT_BAR);
-
-
     }
 }

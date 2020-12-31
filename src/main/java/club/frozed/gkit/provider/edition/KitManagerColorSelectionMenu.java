@@ -67,7 +67,7 @@ public class KitManagerColorSelectionMenu extends Menu {
         return buttons;
     }
 
-    public static class ColorSelectionButton extends Button {
+    private class ColorSelectionButton extends Button {
 
         Kit kitManager;
         ChatColor color;
@@ -102,7 +102,7 @@ public class KitManagerColorSelectionMenu extends Menu {
         }
     }
 
-    public static class ColorBold extends Button {
+    private class ColorBold extends Button {
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -127,7 +127,7 @@ public class KitManagerColorSelectionMenu extends Menu {
         }
     }
 
-    public static class ColorItalic extends Button {
+    private class ColorItalic extends Button {
 
         @Override
         public ItemStack getButtonItem(Player player) {

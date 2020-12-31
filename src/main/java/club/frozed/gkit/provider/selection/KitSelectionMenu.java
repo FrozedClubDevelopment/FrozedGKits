@@ -6,7 +6,6 @@ import club.frozed.gkit.kit.KitManager;
 import club.frozed.gkit.provider.data.PlayerData;
 import club.frozed.gkit.utils.Utils;
 import club.frozed.gkit.utils.chat.Color;
-//import club.frozed.gkit.utils.items.InventoryUtils;
 import club.frozed.gkit.utils.items.InventoryUtils;
 import club.frozed.gkit.utils.items.ItemCreator;
 import club.frozed.gkit.utils.menu.Button;
@@ -50,9 +49,13 @@ public class KitSelectionMenu extends Menu {
         return buttons;
     }
 
-    public static class GKitButton extends Button {
+    private class GKitButton extends Button {
 
         Kit kit;
+
+        public GKitButton(Kit kit) {
+            this.kit = kit;
+        }
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -76,6 +79,7 @@ public class KitSelectionMenu extends Menu {
                 FrozedGKits.getInstance().getPluginConfig().getConfig().getStringList("KIT-SELECTION-MENU.ITEM-LORE.NO-PERMS").forEach(text -> lore.add(Color.translate(text)));
             }
             itemCreator.setLore(lore);
+
             return itemCreator.get();
         }
 
@@ -102,7 +106,6 @@ public class KitSelectionMenu extends Menu {
                     new KitPreviewMenu(kit).openMenu(player);
                     break;
             }
-
         }
 
         @Override
@@ -159,14 +162,11 @@ public class KitSelectionMenu extends Menu {
                 }
             }
         }
-
-        public GKitButton(Kit kit) {
-            this.kit = kit;
-        }
     }
 
     @Override
     public int size(Map<Integer, Button> buttons) {
         return 9 * plugin.getPluginConfig().getConfig().getInt("KIT-SELECTION-MENU.INVENTORY-SIZE");
     }
+
 }

@@ -58,7 +58,7 @@ public class KitManagerEditionMenu extends Menu {
         kitManager.saveKit(player);
     }*/
 
-    public static class KitIconButton extends Button {
+    private class KitIconButton extends Button {
 
         private final Kit kitManager;
 
@@ -90,7 +90,7 @@ public class KitManagerEditionMenu extends Menu {
         }
     }
 
-    public static class KitSlotPositionButton extends Button {
+    private class KitSlotPositionButton extends Button {
 
         private final Kit kitManager;
 
@@ -118,7 +118,7 @@ public class KitManagerEditionMenu extends Menu {
         }
     }
 
-    public static class KitToggleButton extends Button {
+    private class KitToggleButton extends Button {
 
         Kit kitManager;
 
@@ -146,7 +146,7 @@ public class KitManagerEditionMenu extends Menu {
         }
     }
 
-    public static class KitCooldownButton extends Button {
+    private class KitCooldownButton extends Button {
 
         Kit kitManager;
 
@@ -176,7 +176,7 @@ public class KitManagerEditionMenu extends Menu {
         }
     }
 
-    public static class KitColorButton extends Button {
+    private class KitColorButton extends Button {
 
         Kit kitManager;
 
@@ -203,7 +203,7 @@ public class KitManagerEditionMenu extends Menu {
         }
     }
 
-    public static class SaveKitButton extends Button {
+    private class SaveKitButton extends Button {
 
         Kit kitManager;
 

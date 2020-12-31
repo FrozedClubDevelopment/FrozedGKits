@@ -48,7 +48,7 @@ public class KitManagerSelectionMenu extends Menu {
         return buttons;
     }
 
-    public static class KitSelectionActionButton extends Button {
+    private class KitSelectionActionButton extends Button {
 
         @Override
         public ItemStack getButtonItem(Player player) {
@@ -79,7 +79,7 @@ public class KitManagerSelectionMenu extends Menu {
         }
     }
 
-    public static class KitButton extends Button {
+    private class KitButton extends Button {
 
         Kit kitManager;
 

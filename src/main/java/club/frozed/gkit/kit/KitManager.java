@@ -28,7 +28,9 @@ public class KitManager {
     @Getter private static List<UUID> kitNameState = new ArrayList<>();
 
     public static void loadKits() {
-        kits.clear();
+        if (!kits.isEmpty()) {
+            kits.clear();
+        }
 
         for (String kit : FrozedGKits.getInstance().getKitsConfig().getConfig().getConfigurationSection("KITS").getKeys(false)) {
             String icon = FrozedGKits.getInstance().getKitsConfig().getConfig().getString("KITS." + kit + ".ICON");

@@ -15,8 +15,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Getter
-@Setter
+@Getter @Setter
 public final class FrozedGKits extends JavaPlugin {
 
     @Getter private static FrozedGKits instance;

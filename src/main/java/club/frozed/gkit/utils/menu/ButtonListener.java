@@ -58,7 +58,7 @@ public class ButtonListener implements Listener {
                     openMenu.openMenu(player);
                 }
                 if (event.isCancelled()) {
-                    // Bukkit.getScheduler().runTaskLater(FrozedGKits.getInstance(), player::updateInventory, 1L);
+                    Bukkit.getScheduler().runTaskLater(FrozedGKits.getInstance(), player::updateInventory, 1L);
                 }
             } else {
                 if ((event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT || event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) || event.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
@@ -76,15 +76,12 @@ public class ButtonListener implements Listener {
         if (openMenu != null) {
             openMenu.onClose(player);
             Menu.currentlyOpenedMenus.remove(player.getName());
-            if (openMenu instanceof PaginatedMenu) {
-                return;
-            }
         }
 
-        player.setMetadata("scanglitch", new FixedMetadataValue(FrozedGKits.getInstance(), true));
+        //player.setMetadata("scanglitch", new FixedMetadataValue(FrozedGKits.getInstance(), true));
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
@@ -101,5 +98,5 @@ public class ButtonListener implements Listener {
                 }
             }
         }
-    }
+    }*/
 }
