@@ -28,8 +28,7 @@ public final class FrozedGKits extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("FrozedClubDevelopment") ||
-                !this.getDescription().getWebsite().contains("www.frozed.club") || !this.getDescription().getName().equals("FrozedGKits")) {
+        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("FrozedClubDevelopment") || !this.getDescription().getWebsite().contains("www.frozed.club") || !this.getDescription().getName().equals("FrozedGKits")) {
             Bukkit.getPluginManager().disablePlugins();
         }
 
@@ -62,9 +61,5 @@ public final class FrozedGKits extends JavaPlugin {
         KitManager.saveKits();
 
         instance = null;
-    }
-
-    public void createKitsConfig() {
-        this.kitsConfig = new FileConfig(this, "kits.yml");
     }
 }
