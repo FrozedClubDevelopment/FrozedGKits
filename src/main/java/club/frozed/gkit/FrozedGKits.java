@@ -28,7 +28,7 @@ public final class FrozedGKits extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("FrozedClubDevelopment") || !this.getDescription().getWebsite().contains("www.frozed.club") || !this.getDescription().getName().equals("FrozedGKits")) {
+        if (!this.getDescription().getAuthors().contains("Elb1to") || !this.getDescription().getAuthors().contains("Ryzeon") || !this.getDescription().getAuthors().contains("FrozedClubDevelopment") || !this.getDescription().getWebsite().contains("www.frozed.club") || !this.getDescription().getName().equals("FrozedGKits")) {
             Bukkit.getPluginManager().disablePlugins();
         }
 
