@@ -1,5 +1,5 @@
 # FrozedGKits
-### In-Game Kits management plugin
+In-Game Kits management plugin
 
 ## Disclaimer
 This used to be a paid resource, but I abandoned it since it wasn't profitable enough for me, it was also made purely for fun, so some parts of the code aren't the best.
