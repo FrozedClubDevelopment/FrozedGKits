@@ -1,8 +1,16 @@
 # FrozedGKits
-In-Game Kits management plugin
+Currently being recoded...
 
-## Disclaimer
-This used to be a paid resource, but I abandoned it since it wasn't profitable enough for me, it was also made purely for fun, so some parts of the code aren't the best.
+### Features
+- Support for:
+  - NBT tags for kits
+  - Custom enchantments for the kit inventory/armor
+  - Multi-Server (Kit cooldowns synced across servers)
+  - Customizable kits (slots, cooldowns, icons, name, description and nbt tags)
+  - More to come...
+- Fully customizable kits
+- Configurable GUI for kits
+- Kit Manager and Selection GUI
 
 ### Usage terms:
   * You cannot claim that this was all made from scratch by you.
